@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DataViewLayoutDemo } from 'src/app/demo/data-view-layout-demo';
+import { DataViewLayoutDemo } from 'src/app/components/demo/data-view-layout-demo';
 
 // Import PrimeNG modules
 import { AccordionModule } from 'primeng/accordion';
@@ -104,9 +104,20 @@ import { RippleModule } from 'primeng/ripple';
 import { StyleClassModule } from 'primeng/styleclass';
 import { MessageService } from 'primeng/api';
 import { ProductService } from 'src/service/productservice';
+import { MovieListService } from './services/movie-list.service';
+import { metaReducers, reducers } from './store/app.reducer';
+import { MoviesListEffects } from './store/movies-list/movies-list.effects';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { appEffects } from './store/app.effects';
+
 
 @NgModule({
   imports: [
+    StoreModule.forRoot(reducers, { metaReducers: metaReducers }),
+    EffectsModule.forRoot([MoviesListEffects]),
+    StoreDevtoolsModule.instrument(),
     AvatarModule,
     AvatarGroupModule,
     BrowserModule,
@@ -210,7 +221,7 @@ import { ProductService } from 'src/service/productservice';
     RouterModule.forRoot([{ path: '', component: DataViewLayoutDemo }])],
     declarations: [ DataViewLayoutDemo ],
     bootstrap: [ DataViewLayoutDemo ],
-    providers: [ ProductService ]
+    providers: [ ProductService, MovieListService ]
 })
 
 export class AppModule {}
