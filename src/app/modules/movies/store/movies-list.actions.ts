@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Movie } from '../../models/movie.model';
+import { Movie } from '../../../models/movie.model';
 
 export const getPopularMoviesRequest = createAction(
     '[MoviesList] Get Popular Movies Request',

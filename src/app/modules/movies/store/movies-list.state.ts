@@ -1,4 +1,4 @@
-import { Movie } from '../../models/movie.model';
+import { Movie } from '../../../models/movie.model';
 
 export interface IMoviesListState {
     popularMovies: Movie[];

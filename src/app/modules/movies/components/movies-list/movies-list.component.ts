@@ -1,17 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Product } from '../../../domain/product';
-import { ProductService } from '../../../service/productservice';
-import { Movie } from '../../models/movie.model';
+import { Movie } from '../../../../models/movie.model';
 import { Store, select } from '@ngrx/store';
-import { getPopularMoviesRequest } from '../../store/movies-list/movies-list.actions';
-import { popularMoviesSelector } from '../../store/movies-list/movies-list.selectors';
-import { Subject, takeUntil } from 'rxjs';
+import { getPopularMoviesRequest } from '../../store/movies-list.actions';
+import { popularMoviesSelector } from '../../store/movies-list.selectors';
+import { Subject, pipe, takeUntil } from 'rxjs';
+import { ProductService } from '../../../../services/productservice';
+import { Product } from '../../../../models/product';
+import { IAppState } from '../../../../app.state';
 
 @Component({
-    selector: 'data-view-layout-demo',
-    templateUrl: './data-view-layout-demo.html'
+    selector: 'movies-list',
+    templateUrl: './movies-list.component.html'
 })
-export class DataViewLayoutDemo implements OnInit, OnDestroy {
+export class MoviesListComponent implements OnInit, OnDestroy {
     private readonly unsubscribe$ = new Subject<void>();
 
     layout: string = 'list';
@@ -20,7 +21,7 @@ export class DataViewLayoutDemo implements OnInit, OnDestroy {
     products!: Product[];
     movies: Movie[];
 
-    constructor(private productService: ProductService, private readonly store$: Store) {}
+    constructor(private productService: ProductService, private readonly store$: Store<IAppState>) {}
     ngOnDestroy(): void {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
@@ -29,8 +30,7 @@ export class DataViewLayoutDemo implements OnInit, OnDestroy {
     ngOnInit() {
         this.productService.getProducts().then((data) => (this.products = data.slice(0, 12)));
         this.store$.dispatch(getPopularMoviesRequest({ page: 1 }));
-        this.store$.pipe(
-            select(popularMoviesSelector),
+        this.store$.select(popularMoviesSelector).pipe(
             takeUntil(this.unsubscribe$)
         ).subscribe(popularMovies => this.movies = popularMovies);
     }

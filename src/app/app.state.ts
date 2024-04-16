@@ -1,4 +1,4 @@
-import { IMoviesListState, initialMoviesListState } from './movies-list/movies-list.state';
+import { IMoviesListState, initialMoviesListState } from "./modules/movies/store/movies-list.state";
 
 
 export interface IAppState {

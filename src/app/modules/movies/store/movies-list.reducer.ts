@@ -2,7 +2,6 @@ import { createReducer, Action, on } from '@ngrx/store';
 import { IMoviesListState, initialMoviesListState } from './movies-list.state';
 import * as MoviesListActions from './movies-list.actions';
 
-
 const reducer = createReducer(
     initialMoviesListState,
     on(MoviesListActions.getPopularMoviesSuccess,
