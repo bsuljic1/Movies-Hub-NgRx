@@ -11,7 +11,6 @@ import { MoviesModule } from './modules/movies/movies.module';
 import { AppComponent } from './app.component';
 import { MoviesListComponent } from './modules/movies/components/movies-list/movies-list.component';
 import { environment } from '../environments/environment';
-import { SharedModule } from './shared.module';
 
 
 @NgModule({
@@ -27,8 +26,7 @@ import { SharedModule } from './shared.module';
     HttpClientModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([{ path: '', component: MoviesListComponent }]),
-    MoviesModule,
-    SharedModule
+    MoviesModule
   ],
     declarations: [ AppComponent ],
     bootstrap: [ AppComponent ],

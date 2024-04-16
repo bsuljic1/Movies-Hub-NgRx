@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -101,19 +100,13 @@ import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RippleModule } from 'primeng/ripple';
 import { StyleClassModule } from 'primeng/styleclass';
-import { MoviesModule } from './modules/movies/movies.module';
-import { MoviesListComponent } from './modules/movies/components/movies-list/movies-list.component';
-
 
 @NgModule({
   exports: [
     AvatarModule,
     AvatarGroupModule,
-    BrowserModule,
     FormsModule,
-    HttpClientModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule,
     AccordionModule,
     AutoCompleteModule,
     BadgeModule,
@@ -206,8 +199,8 @@ import { MoviesListComponent } from './modules/movies/components/movies-list/mov
     AnimateModule,
     CardModule,
     RippleModule,
-    StyleClassModule
-  ]
+    StyleClassModule,
+    ],
 })
 
 export class SharedModule {}
