@@ -9,6 +9,24 @@ const reducer = createReducer(
             ...state,
             popularMovies: movies
         })
+    ),
+    on(MoviesListActions.getNowPlayingMoviesSuccess,
+        (state, { movies }) => ({
+            ...state,
+            nowPlayingMovies: movies
+        })
+    ),
+    on(MoviesListActions.getTopRatedMoviesSuccess,
+        (state, { movies }) => ({
+            ...state,
+            topRatedMovies: movies
+        })
+    ),
+    on(MoviesListActions.getUpcomingMoviesSuccess,
+        (state, { movies }) => ({
+            ...state,
+            upcomingMovies: movies
+        })
     )
 );
 

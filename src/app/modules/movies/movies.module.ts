@@ -2,22 +2,26 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { ProductService } from '../../services/productservice';
 import { MovieListService } from '../../services/movie-list.service';
 import { MoviesListComponent } from './components/movies-list/movies-list.component';
-import { moviesListReducer } from './store/movies-list.reducer';
-import { MoviesListEffects } from './store/movies-list.effects';
+import { moviesListReducer } from './store/movies-list/movies-list.reducer';
+import { MoviesListEffects } from './store/movies-list/movies-list.effects';
 import { SharedModule } from '../../shared.module';
+import { GenreService } from '../../services/genre.service';
+import { genreReducer } from './store/genre/genre.reducer';
+import { GenreEffects } from './store/genre/genre.effects';
+import { MoviesAccordionComponent } from './components/movies-accordion/movies-accordion.component';
 
 @NgModule({
   imports: [
     CommonModule,
     StoreModule.forFeature('moviesList', moviesListReducer),
-    EffectsModule.forFeature([MoviesListEffects]),
+    StoreModule.forFeature('genre', genreReducer),
+    EffectsModule.forFeature([MoviesListEffects, GenreEffects]),
     SharedModule
   ],
-  providers: [ProductService, MovieListService],
-  declarations: [MoviesListComponent],
-  exports: [MoviesListComponent],
+  providers: [MovieListService, GenreService],
+  declarations: [MoviesListComponent, MoviesAccordionComponent],
+  exports: [MoviesListComponent, MoviesAccordionComponent],
 })
 export class MoviesModule {}

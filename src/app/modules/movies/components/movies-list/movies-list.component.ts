@@ -1,53 +1,47 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Movie } from '../../../../models/movie.model';
-import { Store, select } from '@ngrx/store';
-import { getPopularMoviesRequest } from '../../store/movies-list.actions';
-import { popularMoviesSelector } from '../../store/movies-list.selectors';
-import { Subject, pipe, takeUntil } from 'rxjs';
-import { ProductService } from '../../../../services/productservice';
+import { Subject } from 'rxjs';
 import { Product } from '../../../../models/product';
-import { IAppState } from '../../../../app.state';
 
 @Component({
     selector: 'movies-list',
-    templateUrl: './movies-list.component.html'
+    templateUrl: './movies-list.component.html',
+    styleUrl: './movies-list.component.scss'
 })
 export class MoviesListComponent implements OnInit, OnDestroy {
     private readonly unsubscribe$ = new Subject<void>();
 
-    layout: string = 'list';
+    layout = 'grid';
     imageUrl = 'https://image.tmdb.org/t/p/w400/';
 
     products!: Product[];
-    movies: Movie[];
+    @Input() movies!: Movie[];
+    responsiveOptions: any[] | undefined;
 
-    constructor(private productService: ProductService, private readonly store$: Store<IAppState>) {}
+    constructor() {}
     ngOnDestroy(): void {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
 
     ngOnInit() {
-        this.productService.getProducts().then((data) => (this.products = data.slice(0, 12)));
-        this.store$.dispatch(getPopularMoviesRequest({ page: 1 }));
-        this.store$.select(popularMoviesSelector).pipe(
-            takeUntil(this.unsubscribe$)
-        ).subscribe(popularMovies => this.movies = popularMovies);
+        this.responsiveOptions = [
+            {
+                breakpoint: '1199px',
+                numVisible: 1,
+                numScroll: 1
+            },
+            {
+                breakpoint: '991px',
+                numVisible: 2,
+                numScroll: 1
+            },
+            {
+                breakpoint: '767px',
+                numVisible: 1,
+                numScroll: 1
+            }
+        ];
     }
 
-    getSeverity(product: Product) {
-        switch (product.inventoryStatus) {
-            case 'INSTOCK':
-                return 'success';
-
-            case 'LOWSTOCK':
-                return 'warning';
-
-            case 'OUTOFSTOCK':
-                return 'danger';
-
-            default:
-                return null;
-        }
-    };
 }

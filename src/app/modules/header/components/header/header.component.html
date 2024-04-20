@@ -1,0 +1,15 @@
+<p-toolbar>
+    <div class="p-toolbar-group-start">
+        <p-splitButton icon="pi pi-bars" [model]="menuItems" class="mr-2"></p-splitButton>
+    </div>
+    <div class="p-toolbar-group-center">
+        <span class="p-input-icon-left search-span">
+            <i class="pi pi-search"></i>
+            <input pInputText placeholder="Search" class="search-input" />
+        </span>
+    </div>
+    <div class="p-toolbar-group-end">
+        <p-button icon="pi pi-bookmark-fill" label="Watchlist" class="mr-2" outlined="true"></p-button>
+        <p-splitButton label="Berina" icon="pi pi-user" [model]="profileItems"></p-splitButton>
+    </div>
+</p-toolbar>
