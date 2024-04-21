@@ -1,11 +1,11 @@
-<p-accordion [activeIndex]="0">
+<p-accordion [multiple]="true" [activeIndex]="[0, 1, 2]">
     <p-accordionTab header="Now playing">
-        <movies-list [movies]="nowPlayingMovies$ | async"></movies-list>
+        <movies-list [movies]="nowPlayingMovies$ | async" [category]="Category.NowPlaying"></movies-list>
     </p-accordionTab>
     <p-accordionTab header="Popular releases">
-        <movies-list [movies]="popularMovies$ | async"></movies-list>
+        <movies-list [movies]="popularMovies$ | async" [category]="Category.Popular"></movies-list>
     </p-accordionTab>
     <p-accordionTab header="Upcoming">
-        <movies-list [movies]="upcomingMovies$ | async"></movies-list>
+        <movies-list [movies]="upcomingMovies$ | async" [category]="Category.Upcoming"></movies-list>
     </p-accordionTab>
 </p-accordion>

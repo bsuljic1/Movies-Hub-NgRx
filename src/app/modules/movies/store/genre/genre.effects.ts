@@ -16,7 +16,7 @@ export class GenreEffects {
         ofType(GenreActions.getMovieGenresRequest),
         switchMap(() => this.genreService.getMovieGenres()
             .pipe(
-                map(movieGenres => GenreActions.getMovieGenresSuccess({ movieGenres })),
+                map(response => GenreActions.getMovieGenresSuccess({ movieGenres: response.genres })),
                 catchError(() => of(GenreActions.getMovieGenresFailure()))
             )
         )

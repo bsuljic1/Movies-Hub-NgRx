@@ -11,6 +11,7 @@ import { GenreService } from '../../services/genre.service';
 import { genreReducer } from './store/genre/genre.reducer';
 import { GenreEffects } from './store/genre/genre.effects';
 import { MoviesAccordionComponent } from './components/movies-accordion/movies-accordion.component';
+import { MovieDetailsComponent } from './components/movie-details/movie-details.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,7 @@ import { MoviesAccordionComponent } from './components/movies-accordion/movies-a
     SharedModule
   ],
   providers: [MovieListService, GenreService],
-  declarations: [MoviesListComponent, MoviesAccordionComponent],
-  exports: [MoviesListComponent, MoviesAccordionComponent],
+  declarations: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent],
+  exports: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent],
 })
 export class MoviesModule {}

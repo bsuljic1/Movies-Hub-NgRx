@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../../../app.state';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { getNowPlayingMovies, getPopularMoviesRequest, getUpcomingMovies } from '../../store/movies-list/movies-list.actions';
 import { nowPlayingMoviesSelector, popularMoviesSelector, upcomingMoviesSelector } from '../../store/movies-list/movies-list.selectors';
+import { Category } from '../../../../models/category.enum';
+import { getMovieGenresRequest } from '../../store/genre/genre.actions';
 
 @Component({
     selector: 'movies-accordion',
@@ -14,6 +16,7 @@ export class MoviesAccordionComponent implements OnInit, OnDestroy{
     popularMovies$ =  this.store$.select(popularMoviesSelector);
     nowPlayingMovies$ =  this.store$.select(nowPlayingMoviesSelector);
     upcomingMovies$ =  this.store$.select(upcomingMoviesSelector);
+    Category = Category;
 
     constructor(private readonly store$: Store<IAppState>) {}
 
@@ -22,6 +25,7 @@ export class MoviesAccordionComponent implements OnInit, OnDestroy{
         this.unsubscribe$.complete();
     }
     ngOnInit(): void {
+        this.store$.dispatch(getMovieGenresRequest());
         this.store$.dispatch(getPopularMoviesRequest({ page: 1 }));
         this.store$.dispatch(getNowPlayingMovies({ page: 1 }));
         this.store$.dispatch(getUpcomingMovies({ page: 1 }));

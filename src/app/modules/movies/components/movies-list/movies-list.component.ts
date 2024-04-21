@@ -1,7 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Movie } from '../../../../models/movie.model';
 import { Subject } from 'rxjs';
-import { Product } from '../../../../models/product';
+import { IAppState } from '../../../../app.state';
+import { Store } from '@ngrx/store';
+import { navigateMovieDetails } from '../../../core/store/navigation/navigation.actions';
+import { Category } from '../../../../models/category.enum';
 
 @Component({
     selector: 'movies-list',
@@ -13,12 +16,11 @@ export class MoviesListComponent implements OnInit, OnDestroy {
 
     layout = 'grid';
     imageUrl = 'https://image.tmdb.org/t/p/w400/';
-
-    products!: Product[];
     @Input() movies!: Movie[];
+    @Input() category: Category;
     responsiveOptions: any[] | undefined;
 
-    constructor() {}
+    constructor(private readonly store$: Store<IAppState>) {}
     ngOnDestroy(): void {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
@@ -42,6 +44,10 @@ export class MoviesListComponent implements OnInit, OnDestroy {
                 numScroll: 1
             }
         ];
+    }
+
+    openDetails(movie: Movie) {
+        this.store$.dispatch(navigateMovieDetails({ movieId: movie.id, category: this.category }));
     }
 
 }

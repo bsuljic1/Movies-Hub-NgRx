@@ -13,8 +13,8 @@
                     </div>
                     <h4 class="m-0 title">{{ movie.original_title }}</h4>
                     <div class="flex align-items-center justify-content-center gap-2">
-                        <p-button icon="pi pi-bookmark-fill" label="Add to Watchlist" outlined="true"></p-button>
-                        <!-- <p-button icon="pi pi-eye" [rounded]="true" severity="secondary"></p-button> -->
+                        <p-button icon="pi pi-info" [rounded]="true" severity="secondary" (click)="openDetails(movie)"></p-button>
+                        <p-button icon="pi pi-bookmark-fill" [rounded]="true"></p-button>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,41 @@
+<div class="card">
+    <p-splitter [gutterSize]="0" [panelSizes]="[30, 70]" styleClass="mb-5">
+        <ng-template pTemplate>
+            <div class="col flex align-items-center justify-content-center">
+                <div>
+                    <img src="https://image.tmdb.org/t/p/w300/{{ movie?.poster_path }}" class="shadow-2 image" />
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate>
+            <p-splitter [gutterSize]="0" [panelSizes]="[50, 50]" styleClass="mb-5">
+                <ng-template pTemplate>
+                    <div class="description">
+                        <h1>{{ movie?.title + ' (' + getReleaseDate() + ')'}}</h1>
+                        <p-chip *ngFor="let genre of genres" [label]="genre.name" class="mr-2"></p-chip>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate>
+                    <div class="mt-5 ratings">
+                        <div class="mr-5">
+                            <span class="rating-title mb-3">RATING</span>
+                            <div class="flex align-items-center justify-content-center gap-2">
+                                <i class="pi pi-star-fill icon icon-star"></i>
+                                <span class="rating-desc">{{ movie.vote_average?.toFixed(1)}} <span
+                                        class="rating-desc-solid">/10</span></span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="rating-title mb-3">YOUR RATING</span>
+                            <div class="flex align-items-center justify-content-center gap-2">
+                                <i class="pi pi-star-fill icon icon-star"></i>
+                                <span class="rating-desc">{{ movie.vote_average?.toFixed(1)}} <span
+                                        class="rating-desc-solid">/10</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-splitter>
+        </ng-template>
+    </p-splitter>
+</div>

@@ -7,7 +7,7 @@ export interface Movie {
     overview: string;
     popularity: number;
     poster_path: string;
-    release_date: string;
+    release_date: Date;
     title: string;
     vote_average: number;
     vote_count: number;

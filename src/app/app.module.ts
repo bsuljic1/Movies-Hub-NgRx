@@ -12,6 +12,8 @@ import { AppComponent } from './app.component';
 import { MoviesListComponent } from './modules/movies/components/movies-list/movies-list.component';
 import { environment } from '../environments/environment';
 import { HeaderModule } from './modules/header/header.module';
+import { CoreModule } from './modules/core/core.module';
+import { AppRoutingModule } from './app-routing.module';
 
 
 @NgModule({
@@ -26,9 +28,10 @@ import { HeaderModule } from './modules/header/header.module';
     }),    FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot([{ path: '', component: MoviesListComponent }]),
     MoviesModule,
-    HeaderModule
+    HeaderModule,
+    CoreModule,
+    AppRoutingModule 
   ],
     declarations: [ AppComponent ],
     bootstrap: [ AppComponent ],
