@@ -12,16 +12,20 @@ import { genreReducer } from './store/genre/genre.reducer';
 import { GenreEffects } from './store/genre/genre.effects';
 import { MoviesAccordionComponent } from './components/movies-accordion/movies-accordion.component';
 import { MovieDetailsComponent } from './components/movie-details/movie-details.component';
+import { MovieEffects } from './store/movie/movie.effects';
+import { MovieService } from '../../services/movie.service';
+import { movieReducer } from './store/movie/movie.reducer';
 
 @NgModule({
   imports: [
     CommonModule,
     StoreModule.forFeature('moviesList', moviesListReducer),
     StoreModule.forFeature('genre', genreReducer),
-    EffectsModule.forFeature([MoviesListEffects, GenreEffects]),
+    StoreModule.forFeature('movie', movieReducer),
+    EffectsModule.forFeature([MoviesListEffects, GenreEffects, MovieEffects]),
     SharedModule
   ],
-  providers: [MovieListService, GenreService],
+  providers: [MovieListService, GenreService, MovieService],
   declarations: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent],
   exports: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent],
 })

@@ -12,24 +12,35 @@
                 <ng-template pTemplate>
                     <div class="description">
                         <h1>{{ movie?.title + ' (' + getReleaseDate() + ')'}}</h1>
-                        <p-chip *ngFor="let genre of genres" [label]="genre.name" class="mr-2"></p-chip>
+                        <p-chip *ngFor="let genre of movie?.genres" [label]="genre.name" class="mr-2"></p-chip>
+                        <p class="overview">{{ movie?.overview }}</p>
+                        <span>TRAILER: <a [href]="movie?.homepage">{{ movie?.homepage }}</a></span>
+                        <p>SPOKEN LANGUAGES: <span *ngFor="let language of movie?.spoken_languages">{{
+                                language.english_name }} </span> </p>
+                        <p>WATCH AT:</p>
+                        <div class="flex align-items-center gap-2" *ngFor="let provider of watchProviders$ | async">
+                            <img src="https://image.tmdb.org/t/p/w200/{{ provider?.logo_path }}"
+                                class="shadow-2 provider-logo" />
+                            <p>{{ provider?.provider_name }}</p>
+                        </div>
                     </div>
                 </ng-template>
                 <ng-template pTemplate>
                     <div class="mt-5 ratings">
-                        <div class="mr-5">
+                        <div class="mr-8">
                             <span class="rating-title mb-3">RATING</span>
                             <div class="flex align-items-center justify-content-center gap-2">
                                 <i class="pi pi-star-fill icon icon-star"></i>
-                                <span class="rating-desc">{{ movie.vote_average?.toFixed(1)}} <span
+                                <span class="rating-desc">{{ movie?.vote_average?.toFixed(1)}}<span
                                         class="rating-desc-solid">/10</span></span>
                             </div>
+                            <span>{{ movie?.vote_count }} voters</span>
                         </div>
                         <div>
                             <span class="rating-title mb-3">YOUR RATING</span>
                             <div class="flex align-items-center justify-content-center gap-2">
                                 <i class="pi pi-star-fill icon icon-star"></i>
-                                <span class="rating-desc">{{ movie.vote_average?.toFixed(1)}} <span
+                                <span class="rating-desc">{{ movie?.vote_average?.toFixed(1)}} <span
                                         class="rating-desc-solid">/10</span></span>
                             </div>
                         </div>
@@ -38,4 +49,35 @@
             </p-splitter>
         </ng-template>
     </p-splitter>
+
+    <p-fieldset legend="Images">
+        <p-galleria [(value)]="images" [responsiveOptions]="responsiveOptions"
+            [containerStyle]="{ 'max-width': '640px' }" [numVisible]="5">
+            <ng-template pTemplate="item" let-item>
+                <img [src]="'https://image.tmdb.org/t/p/w500/' + item?.file_path" style="width: 100%;" />
+            </ng-template>
+            <ng-template pTemplate="thumbnail" let-item>
+                <div class="grid grid-nogutter justify-content-center">
+                    <img [src]="'https://image.tmdb.org/t/p/w200/' + item?.file_path" />
+                </div>
+            </ng-template>
+        </p-galleria>
+    </p-fieldset>
+    <div class="review">
+        <p-fieldset *ngFor="let review of reviews" class="custom-legend m-1">
+            <ng-template pTemplate="header">
+                <div class="flex align-items-center gap-2 px-2">
+                    <p-avatar [image]="getReviewAvatar(review)" shape="circle" />
+                    <span class="font-bold">{{ review?.author }}</span>
+                </div>
+            </ng-template>
+            <div class="flex align-items-center gap-2 mt-0 mb-1">
+                <i class="pi pi-star-fill icon"></i>
+                <p class="m-0">{{ review?.author_details?.rating }}</p>
+            </div>
+            <p class="m-0">
+                {{ review?.content }}
+            </p>
+        </p-fieldset>
+    </div>
 </div>

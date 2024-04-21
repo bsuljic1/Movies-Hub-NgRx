@@ -7,18 +7,39 @@
 }
 
 .rating-desc {
-    font-size: 2em;
+    font-size: 1.7em;
     font-weight: bold;
 }
 
 .icon-star {
-    font-size: 1.7em;
+    font-size: 1.5em;
 }
 
 .rating-desc-solid {
     font-weight: normal;
 }
 
+.provider-logo {
+    width: 24px;
+    height: 24px;
+}
+
 .ratings {
     display: flex;
+}
+
+.overview {
+    line-height: 1.5;
+    text-align: justify;
+}
+
+.review {
+    max-width: 640px;
+    width: 640px;
+}
+
+::ng-deep legend {
+    background: none;
+    border:none;
+    padding: 0;
 }

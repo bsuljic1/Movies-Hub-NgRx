@@ -15,7 +15,7 @@ export class NavigationEffects {
 
     navigateHome = createEffect(() => this.actions$.pipe(
         ofType(NavigationActions.navigateMovieDetails),
-        tap(({ movieId, category }) => void this.router.navigate([`details/${movieId}`], { queryParams: { category } }))),
+        tap(({ movieId }) => void this.router.navigate([`details/${movieId}`]))),
         { dispatch: false }
     );
 }

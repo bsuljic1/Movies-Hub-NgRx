@@ -5,7 +5,6 @@ import { Subject } from 'rxjs';
 import { getNowPlayingMovies, getPopularMoviesRequest, getUpcomingMovies } from '../../store/movies-list/movies-list.actions';
 import { nowPlayingMoviesSelector, popularMoviesSelector, upcomingMoviesSelector } from '../../store/movies-list/movies-list.selectors';
 import { Category } from '../../../../models/category.enum';
-import { getMovieGenresRequest } from '../../store/genre/genre.actions';
 
 @Component({
     selector: 'movies-accordion',
@@ -25,7 +24,6 @@ export class MoviesAccordionComponent implements OnInit, OnDestroy{
         this.unsubscribe$.complete();
     }
     ngOnInit(): void {
-        this.store$.dispatch(getMovieGenresRequest());
         this.store$.dispatch(getPopularMoviesRequest({ page: 1 }));
         this.store$.dispatch(getNowPlayingMovies({ page: 1 }));
         this.store$.dispatch(getUpcomingMovies({ page: 1 }));

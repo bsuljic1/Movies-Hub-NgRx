@@ -47,7 +47,7 @@ export class MoviesListComponent implements OnInit, OnDestroy {
     }
 
     openDetails(movie: Movie) {
-        this.store$.dispatch(navigateMovieDetails({ movieId: movie.id, category: this.category }));
+        this.store$.dispatch(navigateMovieDetails({ movieId: movie.id }));
     }
 
 }
