@@ -18,4 +18,10 @@ export class NavigationEffects {
         tap(({ movieId }) => void this.router.navigate([`details/${movieId}`]))),
         { dispatch: false }
     );
+
+    navigateToMovieCategory = createEffect(() => this.actions$.pipe(
+        ofType(NavigationActions.navigateToMovieCategory),
+        tap(({ category }) => void this.router.navigate([`category/${category.toLowerCase()}`]))),
+        { dispatch: false }
+    );
 }

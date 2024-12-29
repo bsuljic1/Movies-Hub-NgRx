@@ -27,6 +27,12 @@ const reducer = createReducer(
             ...state,
             upcomingMovies: movies
         })
+    ),
+    on(MoviesListActions.getMoviesByCategorySuccess,
+        (state, { category, movies }) => ({
+            ...state,
+            [category]: movies
+        })
     )
 );
 

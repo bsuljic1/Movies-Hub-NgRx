@@ -6,38 +6,55 @@ export const moviesListSelector = createFeatureSelector<IMoviesListState>('movie
 
 export const popularMoviesSelector = createSelector(
   moviesListSelector,
-  ({ popularMovies }) => popularMovies
+  ({ popular }) => popular
 );
 
 export const nowPlayingMoviesSelector = createSelector(
   moviesListSelector,
-  ({ nowPlayingMovies }) => nowPlayingMovies
+  ({ nowPlaying }) => nowPlaying
 );
 
 export const topRatedMoviesSelector = createSelector(
   moviesListSelector,
-  ({ topRatedMovies }) => topRatedMovies
+  ({ topRated }) => topRated
 );
 
 export const upcomingMoviesSelector = createSelector(
   moviesListSelector,
-  ({ upcomingMovies }) => upcomingMovies
+  ({ upcoming }) => upcoming
 );
+
+export const selectMoviesByCategory = (category: Category) => createSelector(
+  moviesListSelector,
+  (state) => {
+    switch (category) {
+      case Category.Popular:
+        return state.popular;
+      case Category.NowPlaying:
+        return state.nowPlaying;
+      case Category.Upcoming:
+        return state.upcoming;
+      case Category.TopRated:
+        return state.topRated;
+      default:
+        return state.popular;
+    }
+  });
 
 export const selectMovieById = (movieId: number, category: string) => createSelector(
   moviesListSelector,
   (state) => {
     switch (category) {
       case Category.Popular:
-        return state.popularMovies.find(movie => movie.id === movieId);
+        return state.popular.find(movie => movie.id === movieId);
       case Category.NowPlaying:
-        return state.nowPlayingMovies.find(movie => movie.id === movieId);
+        return state.nowPlaying.find(movie => movie.id === movieId);
       case Category.Upcoming:
-        return state.upcomingMovies.find(movie => movie.id === movieId);
+        return state.upcoming.find(movie => movie.id === movieId);
       case Category.TopRated:
-        return state.topRatedMovies.find(movie => movie.id === movieId);
+        return state.topRated.find(movie => movie.id === movieId);
       default:
-        return state.popularMovies.find(movie => movie.id === movieId);
+        return state.popular.find(movie => movie.id === movieId);
     }
   }
 );

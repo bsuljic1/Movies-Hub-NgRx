@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { Category } from '../../../../models/category.enum';
+import { Store } from '@ngrx/store';
+import { IAppState } from '../../../../app.state';
+import { navigateToMovieCategory } from '../../../core/store/navigation/navigation.actions';
 
 @Component({
     selector: 'header',
@@ -9,6 +13,8 @@ import { MenuItem } from 'primeng/api';
 export class HeaderComponent implements OnInit {
     profileItems: MenuItem[] | undefined;
     menuItems: MenuItem[] | undefined;
+
+    constructor(private readonly store$: Store<IAppState>) { }
 
     ngOnInit() {
         this.profileItems = [
@@ -28,20 +34,28 @@ export class HeaderComponent implements OnInit {
 
         this.menuItems = [
             {
-                label: 'Now playing'
+                label: 'Now playing',
+                command: () => this.store$.dispatch(navigateToMovieCategory({ category: Category.NowPlaying }))
             },
             {
-                label: 'Popular'
+                label: 'Popular',
+                command: () => this.store$.dispatch(navigateToMovieCategory({ category: Category.Popular }))
             },
             {
-                label: 'Top rated'
+                label: 'Top rated',
+                command: () => this.store$.dispatch(navigateToMovieCategory({ category: Category.TopRated }))
             },
             {
-                label: 'Upcoming'
+                label: 'Upcoming',
+                command: () => this.store$.dispatch(navigateToMovieCategory({ category: Category.Upcoming }))
             },
             {
                 label: 'Genres'
             }
         ];
+    }
+
+    navigateToCategory(category: Category): void {
+
     }
 }

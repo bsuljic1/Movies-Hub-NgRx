@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
@@ -9,7 +8,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MoviesModule } from './modules/movies/movies.module';
 import { AppComponent } from './app.component';
-import { MoviesListComponent } from './modules/movies/components/movies-list/movies-list.component';
 import { environment } from '../environments/environment';
 import { HeaderModule } from './modules/header/header.module';
 import { CoreModule } from './modules/core/core.module';

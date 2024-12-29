@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Movie } from '../../../../models/movie.model';
+import { Category } from '../../../../models/category.enum';
 
 // POPULAR
 export const getPopularMoviesRequest = createAction(
@@ -60,4 +61,18 @@ export const getUpcomingMoviesSuccess = createAction(
 
 export const getUpcomingMoviesFailure = createAction(
     '[MoviesList] Get Upcoming Movies Failure'
+);
+
+export const getMoviesByCategory = createAction(
+    '[MoviesList] Get Movies By Category Request',
+    props<{ category: Category }>()
+);
+
+export const getMoviesByCategorySuccess = createAction(
+    '[MoviesList] Get Movies By Category Success',
+    props<{ category: Category, movies: Movie[] }>()
+);
+
+export const getMoviesByCategoryFailure = createAction(
+    '[MoviesList] Get Movies By Category Failure',
 );

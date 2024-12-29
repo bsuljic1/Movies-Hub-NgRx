@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { MovieListService } from '../../services/movie-list.service';
@@ -15,6 +15,7 @@ import { MovieDetailsComponent } from './components/movie-details/movie-details.
 import { MovieEffects } from './store/movie/movie.effects';
 import { MovieService } from '../../services/movie.service';
 import { movieReducer } from './store/movie/movie.reducer';
+import { MoviesCategoryComponent } from './components/movies-category/movies-category.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,7 @@ import { movieReducer } from './store/movie/movie.reducer';
     SharedModule
   ],
   providers: [MovieListService, GenreService, MovieService],
-  declarations: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent],
-  exports: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent],
+  declarations: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent, MoviesCategoryComponent],
+  exports: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent, MoviesCategoryComponent]
 })
 export class MoviesModule {}

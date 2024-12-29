@@ -20,7 +20,10 @@ export class MoviesListComponent implements OnInit, OnDestroy {
     @Input() category: Category;
     responsiveOptions: any[] | undefined;
 
-    constructor(private readonly store$: Store<IAppState>) {}
+    constructor(
+        private readonly store$: Store<IAppState>
+    ) { }
+
     ngOnDestroy(): void {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
