@@ -10,3 +10,8 @@ export const navigateToMovieCategory = createAction(
     '[Navigation] Navigate To Movie Category',
     props<{ category: Category }>()
 );
+
+export const navigateToSearchResults = createAction(
+    '[Navigation] Navigate To Movie Category',
+    props<{ query: string }>()
+);

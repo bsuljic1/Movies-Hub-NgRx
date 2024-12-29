@@ -3,7 +3,9 @@ import { MenuItem } from 'primeng/api';
 import { Category } from '../../../../models/category.enum';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../../../app.state';
-import { navigateToMovieCategory } from '../../../core/store/navigation/navigation.actions';
+import { navigateToMovieCategory, navigateToSearchResults } from '../../../core/store/navigation/navigation.actions';
+import { searchMoviesRequest } from '../../../movies/store/search/search.actions';
+import { debounceTime, Subject } from 'rxjs';
 
 @Component({
     selector: 'header',
@@ -13,6 +15,8 @@ import { navigateToMovieCategory } from '../../../core/store/navigation/navigati
 export class HeaderComponent implements OnInit {
     profileItems: MenuItem[] | undefined;
     menuItems: MenuItem[] | undefined;
+    private readonly searchSubject$: Subject<string> = new Subject();
+
 
     constructor(private readonly store$: Store<IAppState>) { }
 
@@ -53,9 +57,13 @@ export class HeaderComponent implements OnInit {
                 label: 'Genres'
             }
         ];
+
+        this.searchSubject$.pipe(debounceTime(1000)).subscribe(query =>
+            this.store$.dispatch(navigateToSearchResults({ query }))
+        );
     }
 
-    navigateToCategory(category: Category): void {
-
+    onSearch(query: string) {
+        this.searchSubject$.next(query)
     }
 }

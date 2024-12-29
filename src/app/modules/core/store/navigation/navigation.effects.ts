@@ -24,4 +24,10 @@ export class NavigationEffects {
         tap(({ category }) => void this.router.navigate([`category/${category.toLowerCase()}`]))),
         { dispatch: false }
     );
+
+    navigateToSearchResults = createEffect(() => this.actions$.pipe(
+        ofType(NavigationActions.navigateToSearchResults),
+        tap(({ query }) => void this.router.navigate([`search/${query}`]))),
+        { dispatch: false }
+    );
 }

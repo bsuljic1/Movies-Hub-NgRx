@@ -4,34 +4,99 @@ import * as MoviesListActions from './movies-list.actions';
 
 const reducer = createReducer(
     initialMoviesListState,
+    on(MoviesListActions.getPopularMoviesRequest,
+        (state) => ({
+            ...state,
+            isLoading: true
+        })
+    ),
+    on(MoviesListActions.getPopularMoviesFailure,
+        (state) => ({
+            ...state,
+            isLoading: true
+        })
+    ),
     on(MoviesListActions.getPopularMoviesSuccess,
         (state, { movies }) => ({
             ...state,
-            popularMovies: movies
+            popularMovies: movies,
+            isLoading: false
+        })
+    ),
+    on(MoviesListActions.getNowPlayingMovies,
+        (state) => ({
+            ...state,
+            isLoading: true
+        })
+    ),
+    on(MoviesListActions.getNowPlayingMoviesFailure,
+        (state) => ({
+            ...state,
+            isLoading: true
         })
     ),
     on(MoviesListActions.getNowPlayingMoviesSuccess,
         (state, { movies }) => ({
             ...state,
-            nowPlayingMovies: movies
+            nowPlayingMovies: movies,
+            isLoading: false
         })
     ),
+    on(MoviesListActions.getTopRatedMovies,
+        (state) => ({
+            ...state,
+            isLoading: true
+        })
+    ),
+    on(MoviesListActions.getTopRatedMoviesFailure,
+        (state) => ({
+            ...state,
+            isLoading: true
+        })
+    ), 
     on(MoviesListActions.getTopRatedMoviesSuccess,
         (state, { movies }) => ({
             ...state,
-            topRatedMovies: movies
+            topRatedMovies: movies,
+            isLoading: false
+        })
+    ),
+    on(MoviesListActions.getUpcomingMovies,
+        (state) => ({
+            ...state,
+            isLoading: true
+        })
+    ),
+    on(MoviesListActions.getUpcomingMoviesFailure,
+        (state) => ({
+            ...state,
+            isLoading: true
         })
     ),
     on(MoviesListActions.getUpcomingMoviesSuccess,
         (state, { movies }) => ({
             ...state,
-            upcomingMovies: movies
+            upcomingMovies: movies,
+            isLoading: false
+        })
+    ),
+    on(MoviesListActions.getMoviesByCategory,
+        (state) => ({
+            ...state,
+            isLoading: true
+        })
+    ),
+    on(MoviesListActions.getMoviesByCategoryFailure,
+        (state) => ({
+            ...state,
+            isLoading: true
         })
     ),
     on(MoviesListActions.getMoviesByCategorySuccess,
         (state, { category, movies }) => ({
             ...state,
-            [category]: movies
+            [category]: movies,
+            isLoading: false
         })
     )
 );

@@ -5,6 +5,7 @@ import { MoviesAccordionComponent } from './modules/movies/components/movies-acc
 import { MoviesListComponent } from './modules/movies/components/movies-list/movies-list.component';
 import { Category } from './models/category.enum';
 import { MoviesCategoryComponent } from './modules/movies/components/movies-category/movies-category.component';
+import { SearchResultsComponent } from './modules/movies/components/search-results/search-results.component';
 
 
 
@@ -58,6 +59,10 @@ const routes: Routes = [
         data: {
             category: Category.NowPlaying
         }
+    },
+    {
+        path: 'search/:query',
+        component: SearchResultsComponent,
     },
 ];
 @NgModule({

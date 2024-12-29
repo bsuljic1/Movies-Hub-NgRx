@@ -24,6 +24,11 @@ export const upcomingMoviesSelector = createSelector(
   ({ upcoming }) => upcoming
 );
 
+export const isLoadingSelector = createSelector(
+  moviesListSelector,
+  ({ isLoading }) => isLoading
+);
+
 export const selectMoviesByCategory = (category: Category) => createSelector(
   moviesListSelector,
   (state) => {

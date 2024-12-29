@@ -16,6 +16,9 @@ import { MovieEffects } from './store/movie/movie.effects';
 import { MovieService } from '../../services/movie.service';
 import { movieReducer } from './store/movie/movie.reducer';
 import { MoviesCategoryComponent } from './components/movies-category/movies-category.component';
+import { SearchEffects } from './store/search/search.effects';
+import { SearchResultsComponent } from './components/search-results/search-results.component';
+import { searchReducer } from './store/search/search.reducers';
 
 @NgModule({
   imports: [
@@ -23,11 +26,12 @@ import { MoviesCategoryComponent } from './components/movies-category/movies-cat
     StoreModule.forFeature('moviesList', moviesListReducer),
     StoreModule.forFeature('genre', genreReducer),
     StoreModule.forFeature('movie', movieReducer),
-    EffectsModule.forFeature([MoviesListEffects, GenreEffects, MovieEffects]),
+    StoreModule.forFeature('search', searchReducer),
+    EffectsModule.forFeature([MoviesListEffects, GenreEffects, MovieEffects, SearchEffects]),
     SharedModule
   ],
   providers: [MovieListService, GenreService, MovieService],
-  declarations: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent, MoviesCategoryComponent],
-  exports: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent, MoviesCategoryComponent]
+  declarations: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent, MoviesCategoryComponent, SearchResultsComponent],
+  exports: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent, MoviesCategoryComponent, SearchResultsComponent]
 })
-export class MoviesModule {}
+export class MoviesModule { }

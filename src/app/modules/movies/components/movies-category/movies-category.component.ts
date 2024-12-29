@@ -6,7 +6,7 @@ import { takeUntil, switchMap } from 'rxjs/operators';
 import { Movie } from 'src/app/models/movie.model';
 import { IAppState } from '../../../../app.state';
 import { getMoviesByCategory } from '../../store/movies-list/movies-list.actions';
-import { selectMoviesByCategory } from '../../store/movies-list/movies-list.selectors';
+import { isLoadingSelector, selectMoviesByCategory } from '../../store/movies-list/movies-list.selectors';
 import { Category } from '../../../../models/category.enum';
 import { navigateMovieDetails } from '../../../core/store/navigation/navigation.actions';
 
@@ -17,6 +17,7 @@ import { navigateMovieDetails } from '../../../core/store/navigation/navigation.
 })
 export class MoviesCategoryComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject<void>();
+  loading$ = this.store$.select(isLoadingSelector);
   movies = signal<Movie[]>([]);
   paginatedMovies = signal<Movie[]>([]);
   category: Category;

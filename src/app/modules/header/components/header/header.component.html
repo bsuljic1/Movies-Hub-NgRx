@@ -4,9 +4,10 @@
         <p-splitButton icon="pi pi-bars" [model]="menuItems" class="mr-2"></p-splitButton>
     </div>
     <div class="p-toolbar-group-center">
-        <span class="p-input-icon-left search-span">
-            <i class="pi pi-search"></i>
-            <input pInputText placeholder="Search" class="search-input" />
+        <span class="p-input-icon-right search-span">
+            <input #searchInput pInputText placeholder="Search" class="search-input" (input)="onSearch($event.target.value)" />
+            <i class="pi pi-search" style="cursor:pointer" (click)="onSearch(searchInput.value)"
+                (keydown.enter)="onSearch(searchInput.value)"></i>
         </span>
     </div>
     <div class="p-toolbar-group-end">
