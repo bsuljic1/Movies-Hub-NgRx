@@ -19,7 +19,7 @@ const reducer = createReducer(
     on(MoviesListActions.getPopularMoviesSuccess,
         (state, { movies }) => ({
             ...state,
-            popularMovies: movies,
+            popular: movies,
             isLoading: false
         })
     ),
@@ -38,7 +38,7 @@ const reducer = createReducer(
     on(MoviesListActions.getNowPlayingMoviesSuccess,
         (state, { movies }) => ({
             ...state,
-            nowPlayingMovies: movies,
+            nowPlaying: movies,
             isLoading: false
         })
     ),
@@ -57,7 +57,7 @@ const reducer = createReducer(
     on(MoviesListActions.getTopRatedMoviesSuccess,
         (state, { movies }) => ({
             ...state,
-            topRatedMovies: movies,
+            topRated: movies,
             isLoading: false
         })
     ),
@@ -76,7 +76,7 @@ const reducer = createReducer(
     on(MoviesListActions.getUpcomingMoviesSuccess,
         (state, { movies }) => ({
             ...state,
-            upcomingMovies: movies,
+            upcoming: movies,
             isLoading: false
         })
     ),

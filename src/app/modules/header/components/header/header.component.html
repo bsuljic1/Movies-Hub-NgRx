@@ -1,9 +1,8 @@
 <p-toolbar>
     <span routerLink="/" style="cursor:pointer">MoviesHub</span>
-    <div class="p-toolbar-group-start">
-        <p-splitButton icon="pi pi-bars" [model]="menuItems" class="mr-2"></p-splitButton>
-    </div>
     <div class="p-toolbar-group-center">
+        <p-splitButton icon="pi pi-bars" [model]="menuItems" class="mr-2"></p-splitButton>
+
         <span class="p-input-icon-right search-span">
             <input #searchInput pInputText placeholder="Search" class="search-input" (input)="onSearch($event.target.value)" />
             <i class="pi pi-search" style="cursor:pointer" (click)="onSearch(searchInput.value)"

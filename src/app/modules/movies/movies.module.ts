@@ -19,6 +19,7 @@ import { MoviesCategoryComponent } from './components/movies-category/movies-cat
 import { SearchEffects } from './store/search/search.effects';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { searchReducer } from './store/search/search.reducers';
+import { CardItemComponent } from './components/card-item/card-item.component';
 
 @NgModule({
   imports: [
@@ -31,7 +32,7 @@ import { searchReducer } from './store/search/search.reducers';
     SharedModule
   ],
   providers: [MovieListService, GenreService, MovieService],
-  declarations: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent, MoviesCategoryComponent, SearchResultsComponent],
-  exports: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent, MoviesCategoryComponent, SearchResultsComponent]
+  declarations: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent, MoviesCategoryComponent, SearchResultsComponent, CardItemComponent],
+  exports: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent, MoviesCategoryComponent, SearchResultsComponent, CardItemComponent]
 })
 export class MoviesModule { }

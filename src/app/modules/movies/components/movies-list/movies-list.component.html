@@ -1,23 +1,13 @@
-<div class="card">
-    <p-carousel [value]="movies" [numVisible]="4" [numScroll]="4" [circular]="true"
-        [responsiveOptions]="responsiveOptions" autoplayInterval="30000">
-        <ng-template let-movie pTemplate="item">
-            <div class="border-1 surface-border border-round m-2 text-center py-5 px-3 wrapper">
-                <div>
-                    <img src="https://image.tmdb.org/t/p/w200/{{ movie.poster_path }}" class="shadow-2 image" />
-                </div>
-                <div>
-                    <div class="flex align-items-center justify-content-center gap-2">
-                        <i class="pi pi-star-fill icon"></i>
-                        <h4>{{ movie.vote_average?.toFixed(1)}}</h4>
-                    </div>
-                    <h4 class="m-0 title">{{ movie.original_title }}</h4>
-                    <div class="flex align-items-center justify-content-center gap-2">
-                        <p-button icon="pi pi-info" [rounded]="true" severity="secondary" (click)="openDetails(movie)"></p-button>
-                        <p-button icon="pi pi-bookmark-fill" [rounded]="true"></p-button>
-                    </div>
-                </div>
-            </div>
-        </ng-template>
-    </p-carousel>
+<div *ngIf="loading$ | async; else content" class="loader-container">
+    <p-progressSpinner></p-progressSpinner>
 </div>
+<ng-template #content>
+    <div class="card">
+        <p-carousel [value]="movies" [numVisible]="4" [numScroll]="4" [circular]="true"
+            [responsiveOptions]="responsiveOptions" autoplayInterval="30000">
+            <ng-template let-movie pTemplate="item">
+                <card-item [movie]="movie"></card-item>
+            </ng-template>
+        </p-carousel>
+    </div>
+</ng-template>

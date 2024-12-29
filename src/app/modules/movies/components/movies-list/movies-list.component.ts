@@ -5,6 +5,7 @@ import { IAppState } from '../../../../app.state';
 import { Store } from '@ngrx/store';
 import { navigateMovieDetails } from '../../../core/store/navigation/navigation.actions';
 import { Category } from '../../../../models/category.enum';
+import { isLoadingSelector } from '../../store/movies-list/movies-list.selectors';
 
 @Component({
     selector: 'movies-list',
@@ -13,6 +14,7 @@ import { Category } from '../../../../models/category.enum';
 })
 export class MoviesListComponent implements OnInit, OnDestroy {
     private readonly unsubscribe$ = new Subject<void>();
+    loading$ = this.store$.select(isLoadingSelector);
 
     layout = 'grid';
     imageUrl = 'https://image.tmdb.org/t/p/w400/';
@@ -48,9 +50,4 @@ export class MoviesListComponent implements OnInit, OnDestroy {
             }
         ];
     }
-
-    openDetails(movie: Movie) {
-        this.store$.dispatch(navigateMovieDetails({ movieId: movie.id }));
-    }
-
 }
