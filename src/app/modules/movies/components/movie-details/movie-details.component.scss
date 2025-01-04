@@ -13,6 +13,7 @@
 
 .icon-star {
     font-size: 1.5em;
+    color: gold;
 }
 
 .rating-desc-solid {
@@ -33,13 +34,25 @@
     text-align: justify;
 }
 
-.review {
-    max-width: 640px;
-    width: 640px;
-}
-
 ::ng-deep legend {
     background: none;
     border:none;
     padding: 0;
+}
+
+.card {
+    width: 80%;
+    margin: 0 auto;
+}
+
+::ng-deep .p-rating .p-rating-icon{
+    width: 2rem;
+    height: 2rem;
+    color: lightgray;
+}
+
+::ng-deep .p-rating-icon-active {
+    width: 2rem;
+    height: 2rem;
+    color: gold !important;
 }

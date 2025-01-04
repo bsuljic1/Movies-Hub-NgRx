@@ -5,6 +5,7 @@ import { ExtendedMovie } from '../models/movie.model';
 import { ProvidersResponse } from '../models/providers-response.model';
 import { ImageResponse } from '../models/image-response.model';
 import { ReviewResponse } from '../models/review-response.model';
+import { VideoResponse } from '../models/video-response.model';
 
 
 const apiUrl = "https://api.themoviedb.org/3/movie/";
@@ -37,5 +38,9 @@ export class MovieService {
 
     getReviewsForMovie(movieId: number): Observable<ReviewResponse> {
         return this.httpClient.get<ReviewResponse>(apiUrl + `${movieId}/reviews?language=en-US&page=1`, options);
+    }
+
+    getVideosForMovie(movieId: number): Observable<VideoResponse> {
+        return this.httpClient.get<VideoResponse>(apiUrl + `${movieId}/videos`, options);
     }
 }

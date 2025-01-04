@@ -26,7 +26,7 @@ export class MovieEffects {
         ofType(MovieActions.getWatchProviderForMovie),
         switchMap(({ movieId }) => this.movieService.getWatchProviderForMovie(movieId)
             .pipe(
-            map(providers => MovieActions.getWatchProviderForMovieSuccess({ watchProviders: providers.results['GB']?.rent })),
+            map(providers => MovieActions.getWatchProviderForMovieSuccess({ watchProviders: providers.results['US']?.rent ?? providers.results['US']?.flatrate })),
                 catchError(() => of(MovieActions.getWatchProviderForMovieFailure()))
             )
         )
@@ -48,6 +48,16 @@ export class MovieEffects {
             .pipe(
             map(response => MovieActions.getReviewsForMovieSuccess({ reviews: response.results })),
                 catchError(() => of(MovieActions.getReviewsForMovieFailure()))
+            )
+        )
+    ));
+
+    getVideosForMovie$ = createEffect(() => this.actions$.pipe(
+        ofType(MovieActions.getVideosForMovieRequest),
+        switchMap(({ movieId }) => this.movieService.getVideosForMovie(movieId)
+            .pipe(
+            map(response => MovieActions.getVideosForMovieSuccess({ trailer: response.results.find(x => x.site === "YouTube") })),
+                catchError(() => of(MovieActions.getVideosForMovieFailure()))
             )
         )
     ));

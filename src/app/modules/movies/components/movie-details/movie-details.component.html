@@ -1,5 +1,39 @@
 <div class="card">
-    <p-splitter [gutterSize]="0" [panelSizes]="[30, 70]" styleClass="mb-5">
+    <p-splitter [gutterSize]="0" [panelSizes]="[70, 30]" styleClass="mb-5">
+        <ng-template pTemplate>
+            <div class="description" style="margin: 0.5rem">
+                <h1>{{ movie?.title + ' (' + getReleaseDate() + ')'}}</h1>
+                <p-chip *ngFor="let genre of movie?.genres" [label]="genre.name" class="mr-2"></p-chip>
+            </div>
+        </ng-template>
+        <ng-template pTemplate>
+            <div class="mt-5 ratings">
+                <div class="mr-8">
+                    <span class="rating-title mb-3">RATING</span>
+                    <div class="flex align-items-center justify-content-center gap-2">
+                        <i class="pi pi-star-fill icon icon-star"></i>
+                        <span class="rating-desc">{{ movie?.vote_average?.toFixed(1)}}<span
+                                class="rating-desc-solid">/10</span></span>
+                    </div>
+                    <span>{{ movie?.vote_count }} voters</span>
+                </div>
+            </div>
+            <div class="mt-5">
+                <button pButton type="button" label="Rate" icon="pi pi-star" (click)="displayRateDialog = true"></button>
+                <p-dialog [(visible)]="displayRateDialog" [modal]="true" [closable]="true" [responsive]="false" [style]="{width: '50vw'}" headerStyle="text-align: center; padding-bottom: 0;">
+                    <div class="flex flex-column align-items-center justify-content-center">
+                        <h3 style="color: gold; margin-top: 0;">RATE THIS</h3>
+                        <h2 style="margin-top:0;">{{ movie.title }}</h2>
+                        <p-rating [(ngModel)]="userRating" [stars]="10" [cancel]="false"></p-rating>
+                        <div class="flex justify-content-center mt-3" style="width: 40%">
+                            <button pButton type="button" label="Rate" (click)="submitRating(userRating); displayRateDialog = false;" style="width: 100%;"></button>
+                        </div>
+                    </div>
+                </p-dialog>
+            </div>
+        </ng-template>
+    </p-splitter>
+    <p-splitter [gutterSize]="0" [panelSizes]="[35, 65]" styleClass="mb-5">
         <ng-template pTemplate>
             <div class="col flex align-items-center justify-content-center">
                 <div>
@@ -8,51 +42,36 @@
             </div>
         </ng-template>
         <ng-template pTemplate>
-            <p-splitter [gutterSize]="0" [panelSizes]="[50, 50]" styleClass="mb-5">
-                <ng-template pTemplate>
-                    <div class="description">
-                        <h1>{{ movie?.title + ' (' + getReleaseDate() + ')'}}</h1>
-                        <p-chip *ngFor="let genre of movie?.genres" [label]="genre.name" class="mr-2"></p-chip>
-                        <p class="overview">{{ movie?.overview }}</p>
-                        <span>TRAILER: <a [href]="movie?.homepage">{{ movie?.homepage }}</a></span>
-                        <p>SPOKEN LANGUAGES: <span *ngFor="let language of movie?.spoken_languages">{{
-                                language.english_name }} </span> </p>
-                        <p>WATCH AT:</p>
-                        <div class="flex align-items-center gap-2" *ngFor="let provider of watchProviders$ | async">
-                            <img src="https://image.tmdb.org/t/p/w200/{{ provider?.logo_path }}"
-                                class="shadow-2 provider-logo" />
-                            <p>{{ provider?.provider_name }}</p>
-                        </div>
+            <div *ngIf="trailer$ | async as trailer" style="width: 100%; height: 100%; padding: 0.5rem;">
+                <iframe [src]="getTrailerUrl(trailer.key)" title="Movie Trailer"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen style="width: 100%; height: 100%;" frameborder="0">
+                </iframe>
+            </div>
+        </ng-template>
+
+    </p-splitter>
+
+    <p-splitter [gutterSize]="0" [panelSizes]="[20, 80]" styleClass="mb-5" layout="vertical">
+        <ng-template pTemplate>
+            <div style="margin: 0.5rem">
+                <p class="overview">{{ movie?.overview }}</p>
+                <p>SPOKEN LANGUAGES: <span *ngFor="let language of movie?.spoken_languages">{{
+                        language.english_name }} </span> </p>
+                <p>WATCH AT:</p>
+                <div class="grid grid-nogutter">
+                    <div class="col-4 flex align-items-center gap-2" *ngFor="let provider of watchProviders$ | async">
+                        <img src="https://image.tmdb.org/t/p/w200/{{ provider?.logo_path }}"
+                            class="shadow-2 provider-logo" />
+                        <p>{{ provider?.provider_name }}</p>
                     </div>
-                </ng-template>
-                <ng-template pTemplate>
-                    <div class="mt-5 ratings">
-                        <div class="mr-8">
-                            <span class="rating-title mb-3">RATING</span>
-                            <div class="flex align-items-center justify-content-center gap-2">
-                                <i class="pi pi-star-fill icon icon-star"></i>
-                                <span class="rating-desc">{{ movie?.vote_average?.toFixed(1)}}<span
-                                        class="rating-desc-solid">/10</span></span>
-                            </div>
-                            <span>{{ movie?.vote_count }} voters</span>
-                        </div>
-                        <div>
-                            <span class="rating-title mb-3">YOUR RATING</span>
-                            <div class="flex align-items-center justify-content-center gap-2">
-                                <i class="pi pi-star-fill icon icon-star"></i>
-                                <span class="rating-desc">{{ movie?.vote_average?.toFixed(1)}} <span
-                                        class="rating-desc-solid">/10</span></span>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-            </p-splitter>
+                </div>
+            </div>
         </ng-template>
     </p-splitter>
 
     <p-fieldset legend="Images">
-        <p-galleria [(value)]="images" [responsiveOptions]="responsiveOptions"
-            [containerStyle]="{ 'max-width': '640px' }" [numVisible]="5">
+        <p-galleria [(value)]="images" [responsiveOptions]="responsiveOptions" [numVisible]="5">
             <ng-template pTemplate="item" let-item>
                 <img [src]="'https://image.tmdb.org/t/p/w500/' + item?.file_path" style="width: 100%;" />
             </ng-template>
@@ -63,21 +82,25 @@
             </ng-template>
         </p-galleria>
     </p-fieldset>
-    <div class="review">
-        <p-fieldset *ngFor="let review of reviews" class="custom-legend m-1">
-            <ng-template pTemplate="header">
-                <div class="flex align-items-center gap-2 px-2">
-                    <p-avatar [image]="getReviewAvatar(review)" shape="circle" />
-                    <span class="font-bold">{{ review?.author }}</span>
+    <div>
+        <div *ngFor="let review of paginatedReviews()">
+            <p-fieldset class="custom-legend m-1">
+                <ng-template pTemplate="header">
+                    <div class="flex align-items-center gap-2 px-2">
+                        <p-avatar [image]="getReviewAvatar(review)" shape="circle" />
+                        <span class="font-bold">{{ review?.author }}</span>
+                    </div>
+                </ng-template>
+                <div class="flex align-items-center gap-2 mt-0 mb-1">
+                    <i class="pi pi-star-fill icon"></i>
+                    <p class="m-0">{{ review?.author_details?.rating }}</p>
                 </div>
-            </ng-template>
-            <div class="flex align-items-center gap-2 mt-0 mb-1">
-                <i class="pi pi-star-fill icon"></i>
-                <p class="m-0">{{ review?.author_details?.rating }}</p>
-            </div>
-            <p class="m-0">
-                {{ review?.content }}
-            </p>
-        </p-fieldset>
+                <p class="m-0">
+                    {{ review?.content }}
+                </p>
+            </p-fieldset>
+        </div>
+        <p-paginator [rows]="5" [totalRecords]="reviews?.length" (onPageChange)="paginateReviews($event)"></p-paginator>
+
     </div>
 </div>

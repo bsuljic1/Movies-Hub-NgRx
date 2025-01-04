@@ -30,4 +30,16 @@ export class NavigationEffects {
         tap(({ query }) => void this.router.navigate([`search/${query}`]))),
         { dispatch: false }
     );
+
+    navigateToWatchlist = createEffect(() => this.actions$.pipe(
+        ofType(NavigationActions.navigateToWatchlist),
+        tap(() => void this.router.navigate(['watchlist']))),
+        { dispatch: false }
+    );
+
+    navigateToMyRatings = createEffect(() => this.actions$.pipe(
+        ofType(NavigationActions.navigateToMyRatings),
+        tap(() => void this.router.navigate(['ratings']))),
+        { dispatch: false }
+    );
 }

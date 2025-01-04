@@ -6,6 +6,8 @@ import { MoviesListComponent } from './modules/movies/components/movies-list/mov
 import { Category } from './models/category.enum';
 import { MoviesCategoryComponent } from './modules/movies/components/movies-category/movies-category.component';
 import { SearchResultsComponent } from './modules/movies/components/search-results/search-results.component';
+import { WatchlistComponent } from './modules/account/components/watchlist/watchlist.component';
+import { RatingsComponent } from './modules/account/components/ratings/ratings.component';
 
 
 
@@ -63,6 +65,14 @@ const routes: Routes = [
     {
         path: 'search/:query',
         component: SearchResultsComponent,
+    },
+    {
+        path: 'watchlist',
+        component: WatchlistComponent
+    },
+    {
+        path: 'ratings',
+        component: RatingsComponent
     },
 ];
 @NgModule({

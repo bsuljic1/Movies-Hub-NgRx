@@ -15,3 +15,11 @@ export const navigateToSearchResults = createAction(
     '[Navigation] Navigate To Movie Category',
     props<{ query: string }>()
 );
+
+export const navigateToWatchlist = createAction(
+    '[Navigation] Navigate To Watchlist'
+);
+
+export const navigateToMyRatings = createAction(
+    '[Navigation] Navigate To Watchlist'
+);

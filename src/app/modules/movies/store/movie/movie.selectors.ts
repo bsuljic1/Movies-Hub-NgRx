@@ -10,7 +10,7 @@ export const selectedMovieSelector = createSelector(
 
 export const watchProvidersSelector = createSelector(
     movieSelector,
-  ({ watchProviders }) => watchProviders
+  ({ watchProviders }) => watchProviders?.slice(0, 9)
 );
 
 export const imagesSelector = createSelector(
@@ -21,4 +21,9 @@ export const imagesSelector = createSelector(
 export const reviewsSelector = createSelector(
     movieSelector,
   ({ reviews }) => reviews
+);
+
+export const trailerSelector = createSelector(
+  movieSelector,
+({ trailer }) => trailer
 );

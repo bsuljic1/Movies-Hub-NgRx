@@ -1,6 +1,6 @@
 import { createReducer, Action, on } from '@ngrx/store';
 import { IMovieState, initialMovieState } from './movie.state';
-import { getImagesForMovieSuccess, getMovieDetailsByIdSuccess, getReviewsForMovieSuccess, getWatchProviderForMovieSuccess } from './movie.actions';
+import { getImagesForMovieSuccess, getMovieDetailsByIdSuccess, getReviewsForMovieSuccess, getVideosForMovieSuccess, getWatchProviderForMovieSuccess } from './movie.actions';
 
 const reducer = createReducer(
     initialMovieState,
@@ -26,6 +26,12 @@ const reducer = createReducer(
         (state, { reviews }) => ({
             ...state,
             reviews
+        })
+    ),
+    on(getVideosForMovieSuccess,
+        (state, { trailer }) => ({
+            ...state,
+            trailer
         })
     )
 );

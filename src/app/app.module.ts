@@ -12,6 +12,7 @@ import { environment } from '../environments/environment';
 import { HeaderModule } from './modules/header/header.module';
 import { CoreModule } from './modules/core/core.module';
 import { AppRoutingModule } from './app-routing.module';
+import { AccountModule } from './modules/account/account.module';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { AppRoutingModule } from './app-routing.module';
     MoviesModule,
     HeaderModule,
     CoreModule,
-    AppRoutingModule 
+    AppRoutingModule ,
+    AccountModule
   ],
     declarations: [ AppComponent ],
     bootstrap: [ AppComponent ],

@@ -1,0 +1,41 @@
+<div *ngIf="loading$ | async; else content" class="loader-container">
+    <p-progressSpinner></p-progressSpinner>
+</div>
+
+<ng-template #content>
+    <div *ngIf="ratedMovies$ | async as ratedMovies" [style]="{width: '80%', margin: '0 auto'}">
+
+        <div class="ratings-summary">
+            <h2>My Ratings</h2>
+            <p>Total Rated Movies: {{ ratedMovies.length }}</p>
+        </div>
+
+        <p-table [value]="ratedMovies" [paginator]="true" [rows]="8">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th scope="col">Poster</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Your Rating</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-movie>
+                <tr>
+                    <td>
+                        <img src="https://image.tmdb.org/t/p/w200/{{ movie.poster_path }}" alt="{{ movie.title }}"
+                            width="50">
+                    </td>
+                    <td>{{ movie.title }}</td>
+                    <td>{{ movie.overview }}</td>
+                    <td>
+                        <div class="flex align-items-center justify-content-center gap-2">
+                            <i class="pi pi-star-fill icon"></i>
+                            <h4>{{ movie.rating }}/10</h4>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+    </div>
+</ng-template>

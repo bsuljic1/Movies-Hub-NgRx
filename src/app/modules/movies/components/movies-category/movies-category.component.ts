@@ -47,7 +47,6 @@ export class MoviesCategoryComponent implements OnInit, OnDestroy {
     ).subscribe(movies => {
       this.movies.set(movies);
       this.updatePaginatedMovies();
-      console.log(this.movies());
     });
   }
 

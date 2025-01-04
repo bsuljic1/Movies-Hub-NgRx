@@ -3,6 +3,7 @@ import { ExtendedMovie } from '../../../../models/movie.model';
 import { WatchProvider } from '../../../../models/watch-provider.model';
 import { Image } from "../../../../models/image.model";
 import { Review } from '../../../../models/review.model';
+import { Video } from '../../../../models/video.model';
 
 
 ///DETAILS
@@ -64,4 +65,19 @@ export const getReviewsForMovieSuccess = createAction(
 
 export const getReviewsForMovieFailure = createAction(
     '[Movie] Get Reviews For Movie Failure'
+);
+
+///VIDEOS 
+export const getVideosForMovieRequest = createAction(
+    '[Movie] Get Videos For Movie Request',
+    props<{ movieId: number }>()
+);
+
+export const getVideosForMovieSuccess = createAction(
+    '[Movie] Get Videos For Movie Success',
+    props<{ trailer: Video }>()
+);
+
+export const getVideosForMovieFailure = createAction(
+    '[Movie] Get Videos For Movie Failure',
 );

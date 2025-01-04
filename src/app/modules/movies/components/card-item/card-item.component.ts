@@ -4,6 +4,7 @@ import { IAppState } from '../../../../app.state';
 import { Subject } from 'rxjs';
 import { Movie } from '../../../../models/movie.model';
 import { navigateMovieDetails } from '../../../core/store/navigation/navigation.actions';
+import { addMovieToWatchlistRequest } from '../../../account/store/account/account.actions';
 
 @Component({
     selector: 'card-item',
@@ -17,5 +18,9 @@ export class CardItemComponent{
     
     openDetails(movie: Movie) {
         this.store$.dispatch(navigateMovieDetails({ movieId: movie.id }));
+    }
+
+    addToWatchlist(movieId: number) {
+        this.store$.dispatch(addMovieToWatchlistRequest({ movieId }));
     }
 }

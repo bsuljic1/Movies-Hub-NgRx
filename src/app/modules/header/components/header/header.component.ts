@@ -3,8 +3,7 @@ import { MenuItem } from 'primeng/api';
 import { Category } from '../../../../models/category.enum';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../../../app.state';
-import { navigateToMovieCategory, navigateToSearchResults } from '../../../core/store/navigation/navigation.actions';
-import { searchMoviesRequest } from '../../../movies/store/search/search.actions';
+import { navigateToMovieCategory, navigateToMyRatings, navigateToSearchResults, navigateToWatchlist } from '../../../core/store/navigation/navigation.actions';
 import { debounceTime, Subject } from 'rxjs';
 
 @Component({
@@ -26,7 +25,8 @@ export class HeaderComponent implements OnInit {
                 label: 'Profile'
             },
             {
-                label: 'My ratings'
+                label: 'My ratings',
+                command: () => this.store$.dispatch(navigateToMyRatings())
             },
             {
                 label: 'My lists'
@@ -65,5 +65,9 @@ export class HeaderComponent implements OnInit {
 
     onSearch(query: string) {
         this.searchSubject$.next(query)
+    }
+
+    navigateToWatchlist() {
+        this.store$.dispatch(navigateToWatchlist());
     }
 }
