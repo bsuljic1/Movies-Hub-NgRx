@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { IAppState } from '../../../../app.state';
-import { isLoadingSelector, watchlistSelector } from '../../store/account/account.selectors';
-import { getMoviesFromWatchlistRequest, removeFromWatchlistRequest } from '../../store/account/account.actions';
+import { AccountQuery } from '../../store/account/account.query';
+import { AccountService } from '../../store/account/account.service';
 
 @Component({
     selector: 'app-watchlist',
@@ -10,15 +8,16 @@ import { getMoviesFromWatchlistRequest, removeFromWatchlistRequest } from '../..
     styleUrl: './watchlist.component.scss'
 })
 export class WatchlistComponent implements OnInit {
-    movies$ = this.store$.select(watchlistSelector);
-    loading$ = this.store$.select(isLoadingSelector);
-    constructor(private readonly store$: Store<IAppState>) { }
+    movies$ = this.accountQuery.watchlist$;
+    loading$ = this.accountQuery.isLoading$;
+
+    constructor(private readonly accountQuery: AccountQuery, private readonly accountService: AccountService) { }
 
     ngOnInit() {
-        this.store$.dispatch(getMoviesFromWatchlistRequest());
+        this.accountService.setWatchlist().subscribe();
     }
 
     removeFromWatchlist(movieId: number) {
-        this.store$.dispatch(removeFromWatchlistRequest( { movieId }));
+        this.accountService.removeMovieFromWatchlist(movieId).subscribe();
     }
 }

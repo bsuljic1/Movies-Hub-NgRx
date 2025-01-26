@@ -1,18 +1,16 @@
 import { Component, OnDestroy, OnInit, signal } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { IAppState } from '../../../../app.state';
-import { Subject, filter, takeUntil } from 'rxjs';
+import { Subject, filter, map, takeUntil } from 'rxjs';
 import { ExtendedMovie } from '../../../../models/movie.model';
 import { ActivatedRoute } from '@angular/router';
 import { Category } from '../../../../models/category.enum';
 import { Image } from '../../../../models/image.model';
 import { Genre } from '../../../../models/genre.model';
-import { imagesSelector, isLoadingSelector, reviewsSelector, selectedMovieSelector, trailerSelector, watchProvidersSelector } from '../../store/movie/movie.selectors';
-import { getImagesForMovie, getMovieDetailsByIdRequest, getReviewsForMovie, getVideosForMovieRequest, getWatchProviderForMovie } from '../../store/movie/movie.actions';
 import { Review } from '../../../../models/review.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { getRatedMoviesRequest, rateMovieRequest } from '../../../account/store/account/account.actions';
-import { myRatingForselectedMovieSelector } from '../../../account/store/account/account.selectors';
+import { MovieQuery } from '../../store/movie/movie.query';
+import { MovieService } from '../../store/movie/movie.service';
+import { AccountService } from '../../../account/store/account/account.service';
+import { AccountQuery } from '../../../account/store/account/account.query';
 
 @Component({
     selector: 'movie-details',
@@ -21,12 +19,14 @@ import { myRatingForselectedMovieSelector } from '../../../account/store/account
 })
 export class MovieDetailsComponent implements OnInit, OnDestroy {
     private readonly unsubscribe$ = new Subject<void>();
+    watchProviders$ = this.movieQuery.watchProviders$;
+    trailer$ = this.movieQuery.trailer$;
+    isLoading$ = this.movieQuery.isLoading$;
     movie: ExtendedMovie;
     movieId: number;
     category: Category;
     genres: Genre[];
-    watchProviders$ = this.store$.select(watchProvidersSelector);
-    trailer$ = this.store$.select(trailerSelector);
+
     images: Image[] = [];
     reviews: Review[] = [];
     responsiveOptions: any[] | undefined;
@@ -35,10 +35,12 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     paginatedReviews = signal<Review[]>([]);
     myRating: number;
     userRating: number;
-    isLoading$ = this.store$.select(isLoadingSelector);
 
     constructor(
-        private readonly store$: Store<IAppState>,
+        private readonly movieQuery: MovieQuery,
+        private readonly movieService: MovieService,
+        private readonly accountService: AccountService,
+        private readonly accountQuery: AccountQuery,
         private readonly activatedRoute: ActivatedRoute,
         private readonly sanitizer: DomSanitizer
     ) { }
@@ -57,8 +59,8 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
             this.subscribeToMyRating();
         });
 
-        this.store$.select(imagesSelector).pipe(takeUntil(this.unsubscribe$)).subscribe(images => this.images = images);
-        this.store$.select(reviewsSelector).pipe(takeUntil(this.unsubscribe$)).subscribe(reviews => {
+        this.movieQuery.images$.pipe(takeUntil(this.unsubscribe$)).subscribe(images => this.images = images);
+        this.movieQuery.reviews$.pipe(takeUntil(this.unsubscribe$)).subscribe(reviews => {
             this.reviews = reviews;
             this.updatePaginatedReviews();
         });
@@ -79,17 +81,17 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     }
 
     private subscribeToMyRating() {
-        this.store$.select(myRatingForselectedMovieSelector(this.movieId)).pipe(
+        this.accountQuery.ratedMovies$.pipe(
             filter(x => !!x),
             takeUntil(this.unsubscribe$)
-        ).subscribe(rating => {
-            this.myRating = rating;
-            this.userRating = rating;
+        ).subscribe(ratings => {
+            this.myRating = ratings.find(r => r.id === this.movieId)?.rating;
+            this.userRating = this.myRating;
         });
     }
 
     private subscribeToMovieDetails() {
-        this.store$.select(selectedMovieSelector).pipe(
+        this.movieQuery.selectedMovie$.pipe(
             filter(movie => !!movie),
             takeUntil(this.unsubscribe$)
         ).subscribe(movie => {
@@ -98,12 +100,12 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     }
 
     private dispatchActionsToFetchMovieDetails() {
-        this.store$.dispatch(getMovieDetailsByIdRequest({ id: this.movieId }));
-        this.store$.dispatch(getVideosForMovieRequest({ movieId: this.movieId }));
-        this.store$.dispatch(getWatchProviderForMovie({ movieId: this.movieId }));
-        this.store$.dispatch(getImagesForMovie({ movieId: this.movieId }));
-        this.store$.dispatch(getReviewsForMovie({ movieId: this.movieId }));
-        this.store$.dispatch(getRatedMoviesRequest());
+        this.movieService.setSelectedMovie(this.movieId).subscribe();
+        this.movieService.setImages(this.movieId).subscribe();
+        this.movieService.setReviews(this.movieId).subscribe();
+        this.movieService.setTrailer(this.movieId).subscribe();
+        this.movieService.setWatchProviders(this.movieId).subscribe();
+        this.accountService.setRatedMovies().subscribe();
     }
 
     getReleaseDate() {
@@ -134,6 +136,6 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     }
 
     submitRating(rating: number) {
-        this.store$.dispatch(rateMovieRequest({ movieId: this.movie.id, rating }))
+        this.accountService.addRatingForMovie(this.movie.id, rating);
     }
 }

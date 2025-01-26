@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { GenreStore } from './genre.store';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { GenreResponse } from '../models/genre-response.model';
+import { GenreResponse } from '../../../../models/genre-response.model';
+import { tap } from 'rxjs';
 
 const apiUrl = "https://api.themoviedb.org/3/genre/movie/list?";
 const options = {
@@ -12,14 +13,13 @@ const options = {
     }
 };
 
-
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class GenreService {
-    constructor(private readonly httpClient: HttpClient) { }
+  constructor(private readonly genreStore: GenreStore, private readonly httpClient: HttpClient) {}
 
-    getMovieGenres(page = 1): Observable<GenreResponse> {
-        return this.httpClient.get<GenreResponse>(apiUrl + `language=en-US&page=${page}`, options);
-    }
+  setGenres() {
+    return this.httpClient.get<GenreResponse>(apiUrl + `language=en-US&page=1`, options).pipe(
+        tap(response => this.genreStore.set(response.genres))
+    );
+  }
 }
