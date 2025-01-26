@@ -32,11 +32,11 @@ export const removeFromWatchlistRequest = createAction(
     props<{ movieId: number }>()
 );
 
-export const removeMovieToWatchlistSuccess = createAction(
+export const removeMovieFromWatchlistSuccess = createAction(
     '[Account] Remove Movie To Watchlist Success'
 );
 
-export const removeMovieToWatchlistFailure = createAction(
+export const removeMovieFromWatchlistFailure = createAction(
     '[Account] Remove Movie To Watchlist Failure'
 );
 

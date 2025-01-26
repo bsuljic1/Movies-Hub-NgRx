@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { MovieListService } from '../../services/movie-list.service';
@@ -31,8 +31,26 @@ import { CardItemComponent } from './components/card-item/card-item.component';
     EffectsModule.forFeature([MoviesListEffects, GenreEffects, MovieEffects, SearchEffects]),
     SharedModule
   ],
-  providers: [MovieListService, GenreService, MovieService],
-  declarations: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent, MoviesCategoryComponent, SearchResultsComponent, CardItemComponent],
-  exports: [MoviesListComponent, MoviesAccordionComponent, MovieDetailsComponent, MoviesCategoryComponent, SearchResultsComponent, CardItemComponent]
+  providers: [
+    MovieListService,
+    GenreService,
+    MovieService
+  ],
+  declarations: [
+    MoviesListComponent,
+    MoviesAccordionComponent,
+    MovieDetailsComponent,
+    MoviesCategoryComponent,
+    SearchResultsComponent,
+    CardItemComponent
+  ],
+  exports: [
+    MoviesListComponent,
+    MoviesAccordionComponent,
+    MovieDetailsComponent,
+    MoviesCategoryComponent,
+    SearchResultsComponent,
+    CardItemComponent
+  ]
 })
 export class MoviesModule { }

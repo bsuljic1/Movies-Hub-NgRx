@@ -7,7 +7,7 @@ export interface ISearchState {
 }
 
 export const initialSearchState: ISearchState = {
-    searchQuery: null,
+    searchQuery: '',
     searchResult: [],
     isLoading: false
 };

@@ -4,7 +4,6 @@ import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { Movie } from 'src/app/models/movie.model';
 import { IAppState } from '../../../../app.state';
-import { Category } from '../../../../models/category.enum';
 import { navigateMovieDetails } from '../../../core/store/navigation/navigation.actions';
 import { isLoadingSelector, searchResultSelector } from '../../store/search/search.selectors';
 import { ActivatedRoute } from '@angular/router';

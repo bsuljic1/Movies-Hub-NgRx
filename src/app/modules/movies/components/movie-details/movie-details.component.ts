@@ -7,11 +7,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Category } from '../../../../models/category.enum';
 import { Image } from '../../../../models/image.model';
 import { Genre } from '../../../../models/genre.model';
-import { imagesSelector, reviewsSelector, selectedMovieSelector, trailerSelector, watchProvidersSelector } from '../../store/movie/movie.selectors';
+import { imagesSelector, isLoadingSelector, reviewsSelector, selectedMovieSelector, trailerSelector, watchProvidersSelector } from '../../store/movie/movie.selectors';
 import { getImagesForMovie, getMovieDetailsByIdRequest, getReviewsForMovie, getVideosForMovieRequest, getWatchProviderForMovie } from '../../store/movie/movie.actions';
 import { Review } from '../../../../models/review.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { rateMovieRequest } from '../../../account/store/account/account.actions';
+import { getRatedMoviesRequest, rateMovieRequest } from '../../../account/store/account/account.actions';
+import { myRatingForselectedMovieSelector } from '../../../account/store/account/account.selectors';
 
 @Component({
     selector: 'movie-details',
@@ -32,6 +33,9 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     currentReviewsPage = signal<number>(0);
     reviewsPerPage = 3;
     paginatedReviews = signal<Review[]>([]);
+    myRating: number;
+    userRating: number;
+    isLoading$ = this.store$.select(isLoadingSelector);
 
     constructor(
         private readonly store$: Store<IAppState>,
@@ -48,17 +52,9 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
             takeUntil(this.unsubscribe$)
         ).subscribe(params => {
             this.movieId = +params.movieId;
-            this.store$.dispatch(getMovieDetailsByIdRequest({ id: this.movieId }));
-            this.store$.dispatch(getVideosForMovieRequest({ movieId: this.movieId }));
-            this.store$.dispatch(getWatchProviderForMovie({ movieId: this.movieId }));
-            this.store$.dispatch(getImagesForMovie({ movieId: this.movieId }));
-            this.store$.dispatch(getReviewsForMovie({ movieId: this.movieId }));
-            this.store$.select(selectedMovieSelector).pipe(
-                filter(movie => !!movie),
-                takeUntil(this.unsubscribe$)
-            ).subscribe(movie => {
-                this.movie = movie;
-            })
+            this.dispatchActionsToFetchMovieDetails();
+            this.subscribeToMovieDetails();
+            this.subscribeToMyRating();
         });
 
         this.store$.select(imagesSelector).pipe(takeUntil(this.unsubscribe$)).subscribe(images => this.images = images);
@@ -80,6 +76,34 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
                 numVisible: 1
             }
         ];
+    }
+
+    private subscribeToMyRating() {
+        this.store$.select(myRatingForselectedMovieSelector(this.movieId)).pipe(
+            filter(x => !!x),
+            takeUntil(this.unsubscribe$)
+        ).subscribe(rating => {
+            this.myRating = rating;
+            this.userRating = rating;
+        });
+    }
+
+    private subscribeToMovieDetails() {
+        this.store$.select(selectedMovieSelector).pipe(
+            filter(movie => !!movie),
+            takeUntil(this.unsubscribe$)
+        ).subscribe(movie => {
+            this.movie = movie;
+        });
+    }
+
+    private dispatchActionsToFetchMovieDetails() {
+        this.store$.dispatch(getMovieDetailsByIdRequest({ id: this.movieId }));
+        this.store$.dispatch(getVideosForMovieRequest({ movieId: this.movieId }));
+        this.store$.dispatch(getWatchProviderForMovie({ movieId: this.movieId }));
+        this.store$.dispatch(getImagesForMovie({ movieId: this.movieId }));
+        this.store$.dispatch(getReviewsForMovie({ movieId: this.movieId }));
+        this.store$.dispatch(getRatedMoviesRequest());
     }
 
     getReleaseDate() {

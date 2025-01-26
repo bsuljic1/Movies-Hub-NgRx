@@ -4,16 +4,21 @@ import { IAccountState } from "./account.state";
 export const accountSelector = createFeatureSelector<IAccountState>('account');
 
 export const watchlistSelector = createSelector(
-    accountSelector,
+  accountSelector,
   ({ watchlist }) => watchlist
 );
 
 export const ratedMoviesSelector = createSelector(
-    accountSelector,
+  accountSelector,
   ({ ratedMovies }) => ratedMovies
 );
 
 export const isLoadingSelector = createSelector(
-    accountSelector,
+  accountSelector,
   ({ isLoading }) => isLoading
+);
+
+export const myRatingForselectedMovieSelector = (movieId: number) => createSelector(
+  accountSelector,
+  ({ ratedMovies }) => ratedMovies?.find(movie => movie.id === movieId)?.rating
 );

@@ -12,7 +12,7 @@ export const navigateToMovieCategory = createAction(
 );
 
 export const navigateToSearchResults = createAction(
-    '[Navigation] Navigate To Movie Category',
+    '[Navigation] Navigate To Search Results',
     props<{ query: string }>()
 );
 
@@ -21,5 +21,5 @@ export const navigateToWatchlist = createAction(
 );
 
 export const navigateToMyRatings = createAction(
-    '[Navigation] Navigate To Watchlist'
+    '[Navigation] Navigate To My Ratings'
 );

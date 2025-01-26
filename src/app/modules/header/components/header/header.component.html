@@ -4,13 +4,15 @@
         <p-splitButton icon="pi pi-bars" [model]="menuItems" class="mr-2"></p-splitButton>
 
         <span class="p-input-icon-right search-span">
-            <input #searchInput pInputText placeholder="Search" class="search-input" (input)="onSearch($event.target.value)" />
+            <input #searchInput pInputText placeholder="Search" class="search-input"
+                (input)="onSearch($event.target.value)" />
             <i class="pi pi-search" style="cursor:pointer" (click)="onSearch(searchInput.value)"
                 (keydown.enter)="onSearch(searchInput.value)"></i>
         </span>
     </div>
     <div class="p-toolbar-group-end">
-        <p-button icon="pi pi-bookmark-fill" label="Watchlist" class="mr-2" outlined="true" (onClick)="navigateToWatchlist()"></p-button>
+        <p-button icon="pi pi-bookmark-fill" label="Watchlist" class="mr-2" outlined="true"
+            (onClick)="navigateToWatchlistt()"></p-button>
         <p-splitButton label="Berina" icon="pi pi-user" [model]="profileItems"></p-splitButton>
     </div>
 </p-toolbar>

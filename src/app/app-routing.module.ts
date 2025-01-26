@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule, NoPreloading } from '@angular/router';
 import { MovieDetailsComponent } from './modules/movies/components/movie-details/movie-details.component';
 import { MoviesAccordionComponent } from './modules/movies/components/movies-accordion/movies-accordion.component';
-import { MoviesListComponent } from './modules/movies/components/movies-list/movies-list.component';
 import { Category } from './models/category.enum';
 import { MoviesCategoryComponent } from './modules/movies/components/movies-category/movies-category.component';
 import { SearchResultsComponent } from './modules/movies/components/search-results/search-results.component';

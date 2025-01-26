@@ -4,6 +4,8 @@ import * as AccountActions from './account.actions';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { WatchlistService } from '../../../../services/watchlist.service';
 import { RatingsService } from '../../../../services/ratings.service';
+import { showNotification } from '../../../core/store/notifications/notifications.actions';
+import { NotificationType } from '../../../../models/notification-type.enum';
 
 @Injectable()
 export class AccountEffects {
@@ -24,6 +26,28 @@ export class AccountEffects {
         )
     ));
 
+    addMovieToWatchlistSuccess$ = createEffect(() => this.actions$.pipe(
+        ofType(AccountActions.addMovieToWatchlistSuccess),
+        map(() => showNotification({
+            notificationType: NotificationType.Success,
+            detail: "You've successfully added a movie to watchlist."
+        }))
+    ));
+
+    actionFailure$ = createEffect(() => this.actions$.pipe(
+        ofType(
+            AccountActions.addMovieToWatchlistFailure,
+            AccountActions.removeMovieFromWatchlistFailure,
+            AccountActions.getRatedMoviesFailure,
+            AccountActions.getMoviesFromWatchlistFailure,
+            AccountActions.rateMovieFailure,
+        ),
+        map(() => showNotification({
+            notificationType: NotificationType.Error,
+            detail: "Something went wrong. Please try again."
+        }))
+    ));
+
     getMoviesFromWatchList$ = createEffect(() => this.actions$.pipe(
         ofType(AccountActions.getMoviesFromWatchlistRequest),
         switchMap(() => this.watchlistService.getMoviesFromWatchlist()
@@ -38,10 +62,18 @@ export class AccountEffects {
         ofType(AccountActions.removeFromWatchlistRequest),
         switchMap(({ movieId }) => this.watchlistService.addToWatchlist(movieId, false)
             .pipe(
-                map(response => AccountActions.removeMovieToWatchlistSuccess()),
-                catchError(() => of(AccountActions.removeMovieToWatchlistFailure()))
+                map(response => AccountActions.removeMovieFromWatchlistSuccess()),
+                catchError(() => of(AccountActions.removeMovieFromWatchlistFailure()))
             )
         )
+    ));
+
+    removeMovieFromWatchlistSuccess$ = createEffect(() => this.actions$.pipe(
+        ofType(AccountActions.removeMovieFromWatchlistSuccess),
+        map(() => showNotification({
+            notificationType: NotificationType.Success,
+            detail: "You've successfully removed a movie from watchlist."
+        }))
     ));
 
     getRatedMovies$ = createEffect(() => this.actions$.pipe(
@@ -58,9 +90,17 @@ export class AccountEffects {
         ofType(AccountActions.rateMovieRequest),
         switchMap(({ movieId, rating }) => this.ratingsService.addRatingForMovie(movieId, rating)
             .pipe(
-                map(response => AccountActions.rateMovieSuccess()),
+                map(() => AccountActions.rateMovieSuccess()),
                 catchError(() => of(AccountActions.rateMovieFailure()))
             )
         )
+    ));
+
+    rateMovieSuccess$ = createEffect(() => this.actions$.pipe(
+        ofType(AccountActions.rateMovieSuccess),
+        map(() => showNotification({
+            notificationType: NotificationType.Success,
+            detail: "You've successfully rated a movie."
+        }))
     ));
 }

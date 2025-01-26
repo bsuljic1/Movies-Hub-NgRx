@@ -1,23 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Category } from '../../../../models/category.enum';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../../../app.state';
 import { navigateToMovieCategory, navigateToMyRatings, navigateToSearchResults, navigateToWatchlist } from '../../../core/store/navigation/navigation.actions';
-import { debounceTime, Subject } from 'rxjs';
+import { debounceTime, filter, Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'header',
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss'
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
     profileItems: MenuItem[] | undefined;
     menuItems: MenuItem[] | undefined;
     private readonly searchSubject$: Subject<string> = new Subject();
+    private readonly unsubscribe$ = new Subject<void>();
 
 
     constructor(private readonly store$: Store<IAppState>) { }
+    ngOnDestroy(): void {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
+    }
 
     ngOnInit() {
         this.profileItems = [
@@ -58,8 +63,11 @@ export class HeaderComponent implements OnInit {
             }
         ];
 
-        this.searchSubject$.pipe(debounceTime(1000)).subscribe(query =>
-            this.store$.dispatch(navigateToSearchResults({ query }))
+        this.searchSubject$.pipe(
+            filter(query => !!query && query !== ''),
+             debounceTime(1000),
+             takeUntil(this.unsubscribe$)
+            ).subscribe(query => this.store$.dispatch(navigateToSearchResults({ query }))
         );
     }
 
@@ -67,7 +75,7 @@ export class HeaderComponent implements OnInit {
         this.searchSubject$.next(query)
     }
 
-    navigateToWatchlist() {
+    navigateToWatchlistt() {
         this.store$.dispatch(navigateToWatchlist());
     }
 }

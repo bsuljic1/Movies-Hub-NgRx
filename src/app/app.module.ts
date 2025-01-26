@@ -13,6 +13,8 @@ import { HeaderModule } from './modules/header/header.module';
 import { CoreModule } from './modules/core/core.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AccountModule } from './modules/account/account.module';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 
 @NgModule({
@@ -31,11 +33,12 @@ import { AccountModule } from './modules/account/account.module';
     HeaderModule,
     CoreModule,
     AppRoutingModule ,
-    AccountModule
+    AccountModule,
+    ToastModule
   ],
     declarations: [ AppComponent ],
     bootstrap: [ AppComponent ],
-    providers: [ ]
+    providers: [ MessageService ]
 })
 
 export class AppModule {}
