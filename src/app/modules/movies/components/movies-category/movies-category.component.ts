@@ -1,11 +1,14 @@
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, switchMap } from 'rxjs/operators';
+import { Movie } from 'src/app/models/movie.model';
+import { IAppState } from '../../../../app.state';
+import { getMoviesByCategory } from '../../store/movies-list/movies-list.actions';
+import { isLoadingSelector, selectMoviesByCategory } from '../../store/movies-list/movies-list.selectors';
 import { Category } from '../../../../models/category.enum';
-import { MoviesListQuery } from '../../store/movies-list/movie-list.query';
-import { MoviesListAkitaService } from '../../store/movies-list/movie-list.service';
-import { Movie } from '../../../../models/movie.model';
+import { navigateMovieDetails } from '../../../core/store/navigation/navigation.actions';
 
 @Component({
   selector: 'app-movies-category',
@@ -14,7 +17,7 @@ import { Movie } from '../../../../models/movie.model';
 })
 export class MoviesCategoryComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject<void>();
-  loading$ = this.movieListQuery.isLoading$;
+  loading$ = this.store$.select(isLoadingSelector);
   movies = signal<Movie[]>([]);
   paginatedMovies = signal<Movie[]>([]);
   category: Category;
@@ -22,10 +25,8 @@ export class MoviesCategoryComponent implements OnInit, OnDestroy {
   itemsPerPage = 8;
 
   constructor(
-    private readonly movieListQuery: MoviesListQuery,
-    private readonly movieListService: MoviesListAkitaService,
-    private readonly activatedRoute: ActivatedRoute,
-    private readonly router: Router
+    private readonly store$: Store<IAppState>,
+    private readonly activatedRoute: ActivatedRoute
   ) { }
 
   ngOnDestroy(): void {
@@ -38,8 +39,8 @@ export class MoviesCategoryComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
       switchMap(data => {
         this.category = data.category;
-        this.movieListService.getMoviesByCategory(this.category);
-        return this.movieListQuery.selectMoviesByCategory(this.category).pipe(
+        this.store$.dispatch(getMoviesByCategory({ category: this.category }));
+        return this.store$.select(selectMoviesByCategory(this.category)).pipe(
           takeUntil(this.unsubscribe$)
         );
       })
@@ -53,6 +54,10 @@ export class MoviesCategoryComponent implements OnInit, OnDestroy {
     const startIndex = this.currentPage() * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.paginatedMovies.set(this.movies().slice(startIndex, endIndex));
+  }
+
+  openDetails(movie: Movie) {
+    this.store$.dispatch(navigateMovieDetails({ movieId: movie.id }));
   }
 
   onPageChange(event: any) {

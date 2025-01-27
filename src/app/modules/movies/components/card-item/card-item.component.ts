@@ -1,7 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { IAppState } from '../../../../app.state';
+import { Subject } from 'rxjs';
 import { Movie } from '../../../../models/movie.model';
-import { AccountService } from '../../../account/store/account/account.service';
-import { Router } from '@angular/router';
+import { navigateMovieDetails } from '../../../core/store/navigation/navigation.actions';
+import { addMovieToWatchlistRequest } from '../../../account/store/account/account.actions';
 
 @Component({
     selector: 'card-item',
@@ -9,14 +12,15 @@ import { Router } from '@angular/router';
 })
 export class CardItemComponent{
     @Input() movie: Movie;
+    private readonly unsubscribe$ = new Subject<void>();
 
-    constructor(private readonly accountService: AccountService, private readonly router: Router) {}
+    constructor(private readonly store$: Store<IAppState>) {}
     
     openDetails(movie: Movie) {
-        this.router.navigate([`details/${movie.id}`]);
+        this.store$.dispatch(navigateMovieDetails({ movieId: movie.id }));
     }
 
     addToWatchlist(movieId: number) {
-        this.accountService.addMovieToWatchlist(movieId).subscribe();
+        this.store$.dispatch(addMovieToWatchlistRequest({ movieId }));
     }
 }

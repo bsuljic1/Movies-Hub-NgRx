@@ -1,8 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Movie } from '../../../../models/movie.model';
 import { Subject } from 'rxjs';
+import { IAppState } from '../../../../app.state';
+import { Store } from '@ngrx/store';
+import { navigateMovieDetails } from '../../../core/store/navigation/navigation.actions';
 import { Category } from '../../../../models/category.enum';
-import { MoviesListQuery } from '../../store/movies-list/movie-list.query';
+import { isLoadingSelector } from '../../store/movies-list/movies-list.selectors';
 
 @Component({
     selector: 'movies-list',
@@ -11,7 +14,8 @@ import { MoviesListQuery } from '../../store/movies-list/movie-list.query';
 })
 export class MoviesListComponent implements OnInit, OnDestroy {
     private readonly unsubscribe$ = new Subject<void>();
-    loading$ = this.movieListQuery.isLoading$;
+    loading$ = this.store$.select(isLoadingSelector);
+
     layout = 'grid';
     imageUrl = 'https://image.tmdb.org/t/p/w400/';
     @Input() movies!: Movie[];
@@ -19,7 +23,7 @@ export class MoviesListComponent implements OnInit, OnDestroy {
     responsiveOptions: any[] | undefined;
 
     constructor(
-        private readonly movieListQuery: MoviesListQuery
+        private readonly store$: Store<IAppState>
     ) { }
 
     ngOnDestroy(): void {

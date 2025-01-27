@@ -1,6 +1,6 @@
 {
-  "name": "Movies-Hub-Akita",
-  "description": "Movies Hub-Akita",
+  "name": "Movies-Hub",
+  "description": "Movies Hub",
   "license": "MIT",
   "keywords": [],
   "scripts": {
@@ -23,9 +23,10 @@
     "@angular/platform-browser-dynamic": "^17.3.1",
     "@angular/platform-server": "^17.3.1",
     "@angular/router": "^17.3.1",
-    "@datorama/akita": "^7.1.1",
-    "@datorama/akita-ng-entity-service": "^7.0.0",
-    "@datorama/akita-ng-router-store": "^7.0.0",
+    "@ngrx/effects": "^17.2.0",
+    "@ngrx/router-store": "^17.2.0",
+    "@ngrx/store": "^17.2.0",
+    "@ngrx/store-devtools": "^17.2.0",
     "chart.js": "3.3.2",
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
@@ -34,9 +35,5 @@
     "rxjs": "~7.8.1",
     "tslib": "^2.5.0",
     "zone.js": "~0.14.0"
-  }
-,
-  "devDependencies": {
-    "@datorama/akita-ngdevtools": "^7.0.0"
   }
 }

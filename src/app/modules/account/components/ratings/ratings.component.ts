@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountQuery } from '../../store/account/account.query';
-import { AccountService } from '../../store/account/account.service';
+import { Store } from '@ngrx/store';
+import { IAppState } from '../../../../app.state';
+import { isLoadingSelector, ratedMoviesSelector } from '../../store/account/account.selectors';
+import { getRatedMoviesRequest } from '../../store/account/account.actions';
 
 @Component({
     selector: 'app-ratings',
@@ -8,12 +10,12 @@ import { AccountService } from '../../store/account/account.service';
     styleUrl: './ratings.component.scss'
 })
 export class RatingsComponent implements OnInit {
-    ratedMovies$ = this.accountQuery.ratedMovies$;
-    loading$ = this.accountQuery.isLoading$;
+    ratedMovies$ = this.store$.select(ratedMoviesSelector);
+    loading$ = this.store$.select(isLoadingSelector);
     
-    constructor(private readonly accountQuery: AccountQuery, private readonly accountService: AccountService) { }
+    constructor(private readonly store$: Store<IAppState>) { }
 
     ngOnInit() {
-        this.accountService.setRatedMovies().subscribe();
+        this.store$.dispatch(getRatedMoviesRequest());
     }
 }

@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Category } from '../../../../models/category.enum';
+import { Store } from '@ngrx/store';
+import { IAppState } from '../../../../app.state';
+import { navigateToMovieCategory, navigateToMyRatings, navigateToSearchResults, navigateToWatchlist } from '../../../core/store/navigation/navigation.actions';
 import { debounceTime, filter, Subject, takeUntil } from 'rxjs';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'header',
@@ -16,7 +18,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private readonly unsubscribe$ = new Subject<void>();
 
 
-    constructor(private readonly router: Router) { }
+    constructor(private readonly store$: Store<IAppState>) { }
     ngOnDestroy(): void {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
@@ -29,7 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             },
             {
                 label: 'My ratings',
-                command: () => void this.router.navigate(['ratings'])
+                command: () => this.store$.dispatch(navigateToMyRatings())
             },
             {
                 label: 'My lists'
@@ -42,27 +44,30 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.menuItems = [
             {
                 label: 'Now playing',
-                command: () => void this.router.navigate([`category/${Category.NowPlaying.toLowerCase()}`])
+                command: () => this.store$.dispatch(navigateToMovieCategory({ category: Category.NowPlaying }))
             },
             {
                 label: 'Popular',
-                command: () => void this.router.navigate([`category/${Category.Popular.toLowerCase()}`])
+                command: () => this.store$.dispatch(navigateToMovieCategory({ category: Category.Popular }))
             },
             {
                 label: 'Top rated',
-                command: () => void this.router.navigate([`category/${Category.TopRated.toLowerCase()}`])
+                command: () => this.store$.dispatch(navigateToMovieCategory({ category: Category.TopRated }))
             },
             {
                 label: 'Upcoming',
-                command: () => void this.router.navigate([`category/${Category.Upcoming.toLowerCase()}`])
+                command: () => this.store$.dispatch(navigateToMovieCategory({ category: Category.Upcoming }))
+            },
+            {
+                label: 'Genres'
             }
         ];
 
         this.searchSubject$.pipe(
             filter(query => !!query && query !== ''),
-            debounceTime(1000),
-            takeUntil(this.unsubscribe$)
-        ).subscribe(query => void this.router.navigate([`search/${query}`])
+             debounceTime(1000),
+             takeUntil(this.unsubscribe$)
+            ).subscribe(query => this.store$.dispatch(navigateToSearchResults({ query }))
         );
     }
 
@@ -71,6 +76,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
 
     navigateToWatchlistt() {
-        void this.router.navigate(['watchlist'])
+        this.store$.dispatch(navigateToWatchlist());
     }
 }

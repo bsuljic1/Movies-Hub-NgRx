@@ -1,10 +1,13 @@
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { Movie } from 'src/app/models/movie.model';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SearchQuery } from '../../store/search/search.query';
-import { SearchService } from '../../store/search/search.service';
+import { IAppState } from '../../../../app.state';
+import { navigateMovieDetails } from '../../../core/store/navigation/navigation.actions';
+import { isLoadingSelector, searchResultSelector } from '../../store/search/search.selectors';
+import { ActivatedRoute } from '@angular/router';
+import { searchMoviesRequest } from '../../store/search/search.actions';
 
 @Component({
     selector: 'search-results',
@@ -13,19 +16,16 @@ import { SearchService } from '../../store/search/search.service';
 })
 export class SearchResultsComponent implements OnInit, OnDestroy {
     private readonly unsubscribe$ = new Subject<void>();
-    loading$ = this.searchQuery.loading$;
-    movies$ = this.searchQuery.searchResults$;
+    loading$ = this.store$.select(isLoadingSelector);
     movies = signal<Movie[]>([]);
     paginatedMovies = signal<Movie[]>([]);
     currentPage = signal<number>(0);
     itemsPerPage = 8;
-    query = '';
+    query: string = '';
 
     constructor(
-        private readonly searchQuery: SearchQuery,
-        private readonly searchService: SearchService,
-        private readonly activatedRoute: ActivatedRoute,
-        private readonly router: Router
+        private readonly store$: Store<IAppState>,
+        private readonly activatedRoute: ActivatedRoute
     ) { }
 
     ngOnDestroy(): void {
@@ -35,15 +35,14 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.activatedRoute.paramMap.pipe(
-            takeUntil(this.unsubscribe$)
-        ).subscribe(params => {
-            this.query = params.get('query');
-            this.searchService.searchMovies(this.query).subscribe();
-        });
-
-        this.movies$.pipe(
-            filter(x => !!x),
-            takeUntil(this.unsubscribe$)
+            takeUntil(this.unsubscribe$),
+            switchMap(params => {
+                this.query = params.get('query');
+                this.store$.dispatch(searchMoviesRequest({ query: this.query }));
+                return this.store$.select(searchResultSelector).pipe(
+                    takeUntil(this.unsubscribe$)
+                );
+            })
         ).subscribe(movies => {
             this.movies.set(movies);
             this.updatePaginatedMovies();
@@ -53,11 +52,11 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     updatePaginatedMovies() {
         const startIndex = this.currentPage() * this.itemsPerPage;
         const endIndex = startIndex + this.itemsPerPage;
-        this.paginatedMovies.set(this.movies()?.slice(startIndex, endIndex));
+        this.paginatedMovies.set(this.movies().slice(startIndex, endIndex));
     }
 
     openDetails(movie: Movie) {
-        void this.router.navigate([`details/${movie.id}`]);
+        this.store$.dispatch(navigateMovieDetails({ movieId: movie.id }));
     }
 
     onPageChange(event: any) {

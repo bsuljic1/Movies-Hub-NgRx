@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { IAppState } from '../../../../app.state';
 import { Subject } from 'rxjs';
+import { getNowPlayingMovies, getPopularMoviesRequest, getUpcomingMovies } from '../../store/movies-list/movies-list.actions';
+import { nowPlayingMoviesSelector, popularMoviesSelector, upcomingMoviesSelector } from '../../store/movies-list/movies-list.selectors';
 import { Category } from '../../../../models/category.enum';
-import { MoviesListQuery } from '../../store/movies-list/movie-list.query';
-import { MoviesListAkitaService } from '../../store/movies-list/movie-list.service';
 
 @Component({
     selector: 'movies-accordion',
@@ -10,23 +12,20 @@ import { MoviesListAkitaService } from '../../store/movies-list/movie-list.servi
 })
 export class MoviesAccordionComponent implements OnInit, OnDestroy{
     private readonly unsubscribe$ = new Subject<void>();
-    popularMovies$ =  this.moviesListQuery.popularMovies$;
-    nowPlayingMovies$ =  this.moviesListQuery.nowPlayingMovies$;
-    upcomingMovies$ =  this.moviesListQuery.upcomingMovies$;
+    popularMovies$ =  this.store$.select(popularMoviesSelector);
+    nowPlayingMovies$ =  this.store$.select(nowPlayingMoviesSelector);
+    upcomingMovies$ =  this.store$.select(upcomingMoviesSelector);
     Category = Category;
 
-    constructor(
-        private readonly moviesListQuery: MoviesListQuery,
-        private readonly moviesListService: MoviesListAkitaService
-    ) {}
+    constructor(private readonly store$: Store<IAppState>) {}
 
     ngOnDestroy(): void {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
     ngOnInit(): void {
-        this.moviesListService.fetchNowPlayingMovies();
-        this.moviesListService.fetchPopularMovies();
-        this.moviesListService.fetchUpcomingMovies();
+        this.store$.dispatch(getPopularMoviesRequest({ page: 1 }));
+        this.store$.dispatch(getNowPlayingMovies({ page: 1 }));
+        this.store$.dispatch(getUpcomingMovies({ page: 1 }));
     }
 }
