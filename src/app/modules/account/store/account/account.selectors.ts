@@ -13,11 +13,6 @@ export const ratedMoviesSelector = createSelector(
   ({ ratedMovies }) => ratedMovies
 );
 
-export const isLoadingSelector = createSelector(
-  accountSelector,
-  ({ isLoading }) => isLoading
-);
-
 export const myRatingForselectedMovieSelector = (movieId: number) => createSelector(
   accountSelector,
   ({ ratedMovies }) => ratedMovies?.find(movie => movie.id === movieId)?.rating

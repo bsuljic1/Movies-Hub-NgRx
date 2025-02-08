@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared.module';
 import { HeaderComponent } from './components/header/header.component';
+import { MegaMenuModule } from 'primeng/megamenu';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    MegaMenuModule
   ],
   declarations: [HeaderComponent],
   exports: [HeaderComponent],

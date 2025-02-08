@@ -7,9 +7,3 @@ export const searchResultSelector = createSelector(
     searchSelector,
   ({ searchResult }) => searchResult
 );
-
-export const isLoadingSelector = createSelector(
-    searchSelector,
-  ({ isLoading }) => isLoading
-);
-

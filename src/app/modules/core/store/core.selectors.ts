@@ -17,3 +17,8 @@ export const requestTokenSelector = createSelector(
     coreSelector,
   ({ token }) => token?.request_token
 );
+
+export const isLoadingSelector = createSelector(
+  coreSelector,
+({ isLoading }) => isLoading
+);

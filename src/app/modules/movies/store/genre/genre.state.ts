@@ -1,9 +1,12 @@
 import { Genre } from '../../../../models/genre.model';
+import { Movie } from '../../../../models/movie.model';
 
 export interface IGenreState {
-    movieGenres: Genre[]
+    genres: Genre[];
+    movieGenres: { [key: string]: Movie[] };
 }
 
 export const initialGenreState: IGenreState = {
-    movieGenres: []
+    genres: [],
+    movieGenres: {}
 };

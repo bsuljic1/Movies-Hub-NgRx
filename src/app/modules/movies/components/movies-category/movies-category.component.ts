@@ -6,9 +6,10 @@ import { takeUntil, switchMap } from 'rxjs/operators';
 import { Movie } from 'src/app/models/movie.model';
 import { IAppState } from '../../../../app.state';
 import { getMoviesByCategory } from '../../store/movies-list/movies-list.actions';
-import { isLoadingSelector, selectMoviesByCategory } from '../../store/movies-list/movies-list.selectors';
+import { selectMoviesByCategory } from '../../store/movies-list/movies-list.selectors';
 import { Category } from '../../../../models/category.enum';
 import { navigateMovieDetails } from '../../../core/store/navigation/navigation.actions';
+import { isLoadingSelector } from '../../../core/store/core.selectors';
 
 @Component({
   selector: 'app-movies-category',

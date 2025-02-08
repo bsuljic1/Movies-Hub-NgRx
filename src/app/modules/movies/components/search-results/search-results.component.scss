@@ -4,3 +4,16 @@
     align-items: center;
     height: 100vh; /* Full viewport height */
 }
+
+.myChip {
+    margin-bottom: 0.5rem !important;
+    display: inline-block;
+    cursor: pointer;
+}
+
+::ng-deep p-chip.selectedChip {
+    .p-chip {
+        background-color: #3B82F6;
+        color: white;
+    }
+}

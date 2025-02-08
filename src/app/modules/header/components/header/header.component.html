@@ -1,7 +1,8 @@
 <p-toolbar>
     <span routerLink="/" style="cursor:pointer">MoviesHub</span>
     <div class="p-toolbar-group-center">
-        <p-splitButton icon="pi pi-bars" [model]="menuItems" class="mr-2"></p-splitButton>
+        <p-tieredMenu #menu [model]="menuItems" popup="true" [autoDisplay]="false"/>
+        <button pButton type="button" icon="pi pi-bars" (click)="menu.toggle($event)" class="mr-2"></button>
 
         <span class="p-input-icon-right search-span">
             <input #searchInput pInputText placeholder="Search" class="search-input"

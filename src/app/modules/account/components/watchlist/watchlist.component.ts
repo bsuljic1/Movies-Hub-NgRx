@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../../../app.state';
-import { isLoadingSelector, watchlistSelector } from '../../store/account/account.selectors';
+import { watchlistSelector } from '../../store/account/account.selectors';
 import { getMoviesFromWatchlistRequest, removeFromWatchlistRequest } from '../../store/account/account.actions';
+import { isLoadingSelector } from '../../../core/store/core.selectors';
 
 @Component({
     selector: 'app-watchlist',

@@ -9,3 +9,17 @@
 .search-input {
     width: 100%;
 }
+
+
+::ng-deep .p-menuitem:not(.p-menuitem-active) > p-tieredmenusub {
+    display: none;
+}
+
+::ng-deep .p-menuitem-active > p-tieredmenusub {
+    display: block;
+}
+
+::ng-deep .p-submenu-list {
+    display: grid !important;
+    grid-template-columns: repeat(6, 1fr);
+}

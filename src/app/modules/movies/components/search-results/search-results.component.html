@@ -3,6 +3,11 @@
 </div>
 
 <ng-template #content>
+    <div class="genre-list mt-5 mb-5">
+        <p-chip *ngFor="let genre of genres$ | async" [label]="genre.name" class="mr-2 myChip"
+            (click)="genreClicked(genre.id)" (keydown.enter)="genreClicked(genre.id)"
+            [class.selectedChip]="selectedGenres.includes(genre.id)" />
+    </div>
     <div class="grid">
         <div *ngFor="let movie of paginatedMovies()" class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
             <card-item [movie]="movie"></card-item>

@@ -5,10 +5,12 @@ export interface ICoreState {
     isLoggedIn: boolean;
     currentUser: User;
     token: Token;
+    isLoading: boolean;
 }
 
 export const initialCoreState: ICoreState = {
     isLoggedIn: false,
     currentUser: null,
-    token: null
+    token: null,
+    isLoading: false
 };

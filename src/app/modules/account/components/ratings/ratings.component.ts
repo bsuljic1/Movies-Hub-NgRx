@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../../../app.state';
-import { isLoadingSelector, ratedMoviesSelector } from '../../store/account/account.selectors';
+import { ratedMoviesSelector } from '../../store/account/account.selectors';
 import { getRatedMoviesRequest } from '../../store/account/account.actions';
+import { isLoadingSelector } from '../../../core/store/core.selectors';
 
 @Component({
     selector: 'app-ratings',

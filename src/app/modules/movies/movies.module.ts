@@ -20,6 +20,7 @@ import { SearchEffects } from './store/search/search.effects';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { searchReducer } from './store/search/search.reducers';
 import { CardItemComponent } from './components/card-item/card-item.component';
+import { DiscoverMovieService } from '../../services/discover.service';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { CardItemComponent } from './components/card-item/card-item.component';
   providers: [
     MovieListService,
     GenreService,
-    MovieService
+    MovieService,
+    DiscoverMovieService
   ],
   declarations: [
     MoviesListComponent,

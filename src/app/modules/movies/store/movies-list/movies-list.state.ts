@@ -5,7 +5,6 @@ export interface IMoviesListState {
     nowPlaying: Movie[];
     topRated: Movie[];
     upcoming: Movie[];
-    isLoading: boolean;
 }
 
 export const initialMoviesListState: IMoviesListState = {
@@ -13,5 +12,4 @@ export const initialMoviesListState: IMoviesListState = {
     nowPlaying: [],
     topRated: [],
     upcoming: [],
-    isLoading: false
 };

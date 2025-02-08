@@ -15,30 +15,33 @@ import { AppRoutingModule } from './app-routing.module';
 import { AccountModule } from './modules/account/account.module';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { metaReducers, reducers } from './app.reducers';
+import { AppEffects } from './app.effects';
+import { CoreEffects } from './modules/core/store/core.effects';
 
 
 @NgModule({
   imports: [
     BrowserModule,
-    StoreModule.forRoot({}),
-    EffectsModule.forRoot(),
+    StoreModule.forRoot(reducers, { metaReducers: metaReducers }),
+    EffectsModule.forRoot([AppEffects]),
     StoreDevtoolsModule.instrument({
-      maxAge: 25, // Retains last 25 states
-      logOnly: environment.production, // Restrict extension to log-only mode
-      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
-    }),    FormsModule,
+      maxAge: 25,
+      logOnly: environment.production,
+      autoPause: true,
+    }), FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MoviesModule,
     HeaderModule,
     CoreModule,
-    AppRoutingModule ,
+    AppRoutingModule,
     AccountModule,
     ToastModule
   ],
-    declarations: [ AppComponent ],
-    bootstrap: [ AppComponent ],
-    providers: [ MessageService ]
+  declarations: [AppComponent],
+  bootstrap: [AppComponent],
+  providers: [MessageService]
 })
 
-export class AppModule {}
+export class AppModule { }

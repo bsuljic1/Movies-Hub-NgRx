@@ -10,7 +10,6 @@ export interface IMovieState {
     images: Image[];
     reviews: Review[];
     trailer: Video;
-    isLoading: boolean;
 }
 
 export const initialMovieState: IMovieState = {
@@ -19,5 +18,4 @@ export const initialMovieState: IMovieState = {
     images: [],
     reviews: [],
     trailer: null,
-    isLoading: false
 };

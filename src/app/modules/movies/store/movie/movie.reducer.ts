@@ -14,15 +14,13 @@ const reducer = createReducer(
     on(getWatchProviderForMovieSuccess,
         (state, { watchProviders }) => ({
             ...state,
-            watchProviders,
-            isLoading: false
+            watchProviders
         })
     ),
     on(getImagesForMovieSuccess,
         (state, { images }) => ({
             ...state,
-            images,
-            isLoading: false
+            images
         })
     ),
     on(getReviewsForMovieSuccess,
@@ -36,16 +34,6 @@ const reducer = createReducer(
         (state, { trailer }) => ({
             ...state,
             trailer,
-            isLoading: false
-        })
-    ),
-    on(getVideosForMovieFailure,
-        getReviewsForMovieFailure,
-        getImagesForMovieFailure,
-        getWatchProviderForMovieFailure,
-        getMovieDetailsByIdFailure,
-        (state) => ({
-            ...state,
             isLoading: false
         })
     ),

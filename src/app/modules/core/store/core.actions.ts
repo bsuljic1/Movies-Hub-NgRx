@@ -29,3 +29,8 @@ export const loginSuccess = createAction(
 export const loginFailure = createAction(
     '[Core] Login Failure'
 );
+
+export const setIsLoading = createAction(
+    '[Core] Set Is Loading',
+    props<{ isLoading: boolean }>()
+);

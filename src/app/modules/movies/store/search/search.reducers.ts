@@ -1,29 +1,21 @@
 import { createReducer, Action, on } from '@ngrx/store';
 import { initialSearchState, ISearchState } from './search.state';
-import { searchMoviesFailure, searchMoviesRequest, searchMoviesSuccess } from './search.actions';
+import { searchMoviesRequest, searchMoviesSuccess } from './search.actions';
 
 const reducer = createReducer(
     initialSearchState,
     on(searchMoviesRequest,
         (state, { query }) => ({
             ...state,
-            searchQuery: query,
-            isLoading: true
+            searchQuery: query
         })
     ),
     on(searchMoviesSuccess,
         (state, { searchResult }) => ({
             ...state,
-            searchResult,
-            isLoading: false
+            searchResult
         })
-    ),
-    on(searchMoviesFailure,
-        (state) => ({
-            ...state,
-            isLoading: false
-        })
-    ),
+    )
 );
 
 export function searchReducer(state: ISearchState, action: Action): ISearchState {

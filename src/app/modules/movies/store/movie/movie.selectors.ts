@@ -28,7 +28,3 @@ export const trailerSelector = createSelector(
 ({ trailer }) => trailer
 );
 
-export const isLoadingSelector = createSelector(
-  movieSelector,
-({ isLoading }) => isLoading
-);

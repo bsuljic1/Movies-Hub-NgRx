@@ -1,6 +1,6 @@
 import { createReducer, Action, on } from '@ngrx/store';
 import { ICoreState, initialCoreState } from './core.state';
-import { createRequestTokenSuccess, loginFailure, loginRequest, loginSuccess } from './core.actions';
+import { createRequestTokenSuccess, loginFailure, loginRequest, loginSuccess, setIsLoading } from './core.actions';
 
 const reducer = createReducer(
     initialCoreState,
@@ -27,6 +27,12 @@ const reducer = createReducer(
         state => ({
             ...state,
             isLoggedIn: false
+        })
+    ),
+    on(setIsLoading,
+        (state, { isLoading }) => ({
+            ...state,
+            isLoading
         })
     )
 );

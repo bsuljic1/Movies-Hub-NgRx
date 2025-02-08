@@ -27,7 +27,7 @@ export class NavigationEffects {
 
     navigateToSearchResults = createEffect(() => this.actions$.pipe(
         ofType(NavigationActions.navigateToSearchResults),
-        tap(({ query }) => void this.router.navigate([`search/${query}`]))),
+        tap(({ queryParams }) => void this.router.navigate([`search`], { queryParams }))),
         { dispatch: false }
     );
 

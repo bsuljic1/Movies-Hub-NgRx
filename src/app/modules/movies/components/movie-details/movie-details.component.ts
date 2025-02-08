@@ -7,12 +7,13 @@ import { ActivatedRoute } from '@angular/router';
 import { Category } from '../../../../models/category.enum';
 import { Image } from '../../../../models/image.model';
 import { Genre } from '../../../../models/genre.model';
-import { imagesSelector, isLoadingSelector, reviewsSelector, selectedMovieSelector, trailerSelector, watchProvidersSelector } from '../../store/movie/movie.selectors';
+import { imagesSelector, reviewsSelector, selectedMovieSelector, trailerSelector, watchProvidersSelector } from '../../store/movie/movie.selectors';
 import { getImagesForMovie, getMovieDetailsByIdRequest, getReviewsForMovie, getVideosForMovieRequest, getWatchProviderForMovie } from '../../store/movie/movie.actions';
 import { Review } from '../../../../models/review.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { getRatedMoviesRequest, rateMovieRequest } from '../../../account/store/account/account.actions';
 import { myRatingForselectedMovieSelector } from '../../../account/store/account/account.selectors';
+import { isLoadingSelector } from '../../../core/store/core.selectors';
 
 @Component({
     selector: 'movie-details',

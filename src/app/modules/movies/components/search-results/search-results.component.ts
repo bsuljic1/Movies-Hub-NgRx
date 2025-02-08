@@ -5,9 +5,12 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 import { Movie } from 'src/app/models/movie.model';
 import { IAppState } from '../../../../app.state';
 import { navigateMovieDetails } from '../../../core/store/navigation/navigation.actions';
-import { isLoadingSelector, searchResultSelector } from '../../store/search/search.selectors';
+import { searchResultSelector } from '../../store/search/search.selectors';
 import { ActivatedRoute } from '@angular/router';
 import { searchMoviesRequest } from '../../store/search/search.actions';
+import { getMoviesByGenreRequest } from '../../store/genre/genre.actions';
+import { genresSelector, selectMoviesByGenres } from '../../store/genre/genre.selectors';
+import { isLoadingSelector } from '../../../core/store/core.selectors';
 
 @Component({
     selector: 'search-results',
@@ -22,6 +25,9 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     currentPage = signal<number>(0);
     itemsPerPage = 8;
     query: string = '';
+    genre: string;
+    genres$ = this.store$.select(genresSelector);
+    selectedGenres: string[] = [];
 
     constructor(
         private readonly store$: Store<IAppState>,
@@ -34,11 +40,23 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.activatedRoute.paramMap.pipe(
+        this.loading$.subscribe(x => console.log(x))
+        this.activatedRoute.queryParams.pipe(
             takeUntil(this.unsubscribe$),
             switchMap(params => {
-                this.query = params.get('query');
-                this.store$.dispatch(searchMoviesRequest({ query: this.query }));
+                this.query = params['searchText'];
+                this.genre = params['genre'];
+                if (!!this.query && this.query !== '') {
+                    this.store$.dispatch(searchMoviesRequest({ query: this.query }));
+                }
+
+                if (this.genre) {
+                    this.store$.dispatch(getMoviesByGenreRequest({ genres: this.genre }));
+                    return this.store$.select(selectMoviesByGenres(this.genre)).pipe(
+                        takeUntil(this.unsubscribe$)
+                    );
+                }
+
                 return this.store$.select(searchResultSelector).pipe(
                     takeUntil(this.unsubscribe$)
                 );
@@ -62,5 +80,25 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     onPageChange(event: any) {
         this.currentPage.set(event.page);
         this.updatePaginatedMovies();
+    }
+
+    genreClicked(genreId: string) {
+        const index = this.selectedGenres.indexOf(genreId);
+        if (index === -1) {
+            this.selectedGenres.push(genreId);
+            this.selectedGenres.sort((a,b) => a > b ? 1 : -1); // Ensure the genres are always in the same order
+        } else {
+            this.selectedGenres.splice(index, 1);
+        }
+
+        this.store$.dispatch(getMoviesByGenreRequest({
+            genres: this.selectedGenres.join(',')
+        }));
+        this.store$.select(selectMoviesByGenres(this.selectedGenres.join(','))).pipe(
+            takeUntil(this.unsubscribe$)
+        ).subscribe(movies => {
+            this.movies.set(movies);
+            this.updatePaginatedMovies();
+        });
     }
 }

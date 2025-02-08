@@ -1,11 +1,17 @@
-<p-accordion [multiple]="true" [activeIndex]="[0, 1, 2]">
-    <p-accordionTab header="Now playing">
-        <movies-list [movies]="nowPlayingMovies$ | async" [category]="Category.NowPlaying"></movies-list>
-    </p-accordionTab>
-    <p-accordionTab header="Popular releases">
-        <movies-list [movies]="popularMovies$ | async" [category]="Category.Popular"></movies-list>
-    </p-accordionTab>
-    <p-accordionTab header="Upcoming">
-        <movies-list [movies]="upcomingMovies$ | async" [category]="Category.Upcoming"></movies-list>
-    </p-accordionTab>
-</p-accordion>
+<div *ngIf="loading$ | async; else content" class="loader-container">
+    <p-progressSpinner></p-progressSpinner>
+</div>
+
+<ng-template #content>
+    <p-accordion [multiple]="true" [activeIndex]="[0, 1, 2]">
+        <p-accordionTab header="Now playing">
+            <movies-list [movies]="nowPlayingMovies$ | async" [category]="Category.NowPlaying"></movies-list>
+        </p-accordionTab>
+        <p-accordionTab header="Popular releases">
+            <movies-list [movies]="popularMovies$ | async" [category]="Category.Popular"></movies-list>
+        </p-accordionTab>
+        <p-accordionTab header="Upcoming">
+            <movies-list [movies]="upcomingMovies$ | async" [category]="Category.Upcoming"></movies-list>
+        </p-accordionTab>
+    </p-accordion>
+</ng-template>

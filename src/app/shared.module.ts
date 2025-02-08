@@ -199,8 +199,8 @@ import { StyleClassModule } from 'primeng/styleclass';
     AnimateModule,
     CardModule,
     RippleModule,
-    StyleClassModule,
-    ],
+    StyleClassModule
+  ],
 })
 
-export class SharedModule {}
+export class SharedModule { }

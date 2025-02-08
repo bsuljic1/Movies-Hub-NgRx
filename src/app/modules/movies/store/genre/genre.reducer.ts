@@ -1,13 +1,23 @@
 import { createReducer, Action, on } from '@ngrx/store';
 import { IGenreState, initialGenreState } from './genre.state';
-import { getMovieGenresSuccess } from './genre.actions';
+import { getGenresSuccess, getMoviesByGenreSuccess } from './genre.actions';
+import { Movie } from '../../../../models/movie.model';
 
 const reducer = createReducer(
     initialGenreState,
-    on(getMovieGenresSuccess,
-        (state, { movieGenres }) => ({
+    on(getGenresSuccess,
+        (state, { genres }) => ({
             ...state,
-            movieGenres
+            genres
+        })
+    ),
+    on(getMoviesByGenreSuccess,
+        (state, { genres, movies }) => ({
+            ...state,
+            movieGenres: {
+                ...state.movieGenres,
+                [genres]: mergeMovies(state.movieGenres[genres] || [], movies),
+            },
         })
     )
 );
@@ -15,3 +25,9 @@ const reducer = createReducer(
 export function genreReducer(state: IGenreState, action: Action): IGenreState {
     return reducer(state, action);
 }
+
+function mergeMovies(existingMovies: Movie[], newMovies: Movie[]): Movie[] {
+    const allMovies = [...existingMovies, ...newMovies];
+    return Array.from(new Map(allMovies.map((m) => [m.id, m])).values()); // Remove duplicates
+}
+

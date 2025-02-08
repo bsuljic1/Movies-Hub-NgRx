@@ -3,9 +3,8 @@ import { Movie } from '../../../../models/movie.model';
 import { Subject } from 'rxjs';
 import { IAppState } from '../../../../app.state';
 import { Store } from '@ngrx/store';
-import { navigateMovieDetails } from '../../../core/store/navigation/navigation.actions';
 import { Category } from '../../../../models/category.enum';
-import { isLoadingSelector } from '../../store/movies-list/movies-list.selectors';
+import { isLoadingSelector } from '../../../core/store/core.selectors';
 
 @Component({
     selector: 'movies-list',

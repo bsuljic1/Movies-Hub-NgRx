@@ -1,5 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { Category } from "../../../../models/category.enum";
+import { Params } from "@angular/router";
 
 export const navigateMovieDetails = createAction(
     '[Navigation] Navigate Movie Details',
@@ -13,7 +14,7 @@ export const navigateToMovieCategory = createAction(
 
 export const navigateToSearchResults = createAction(
     '[Navigation] Navigate To Search Results',
-    props<{ query: string }>()
+    props<{ queryParams: Params }>()
 );
 
 export const navigateToWatchlist = createAction(

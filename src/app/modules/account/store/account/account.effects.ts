@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as AccountActions from './account.actions';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { WatchlistService } from '../../../../services/watchlist.service';
 import { RatingsService } from '../../../../services/ratings.service';
 import { showNotification } from '../../../core/store/notifications/notifications.actions';
 import { NotificationType } from '../../../../models/notification-type.enum';
+import { IAppState } from '../../../../app.state';
+import { Store } from '@ngrx/store';
+import { setIsLoading } from '../../../core/store/core.actions';
 
 @Injectable()
 export class AccountEffects {
@@ -13,11 +16,13 @@ export class AccountEffects {
     constructor(
         private readonly actions$: Actions,
         private readonly watchlistService: WatchlistService,
-        private readonly ratingsService: RatingsService
+        private readonly ratingsService: RatingsService,
+        private readonly store$: Store<IAppState>
     ) { }
 
     addMovieToWatchList$ = createEffect(() => this.actions$.pipe(
         ofType(AccountActions.addMovieToWatchlistRequest),
+        tap(() => this.store$.dispatch(setIsLoading({ isLoading: true }))),
         switchMap(({ movieId }) => this.watchlistService.addToWatchlist(movieId, true)
             .pipe(
                 map(response => response.success ? AccountActions.addMovieToWatchlistSuccess() : AccountActions.addMovieToWatchlistFailure()),
@@ -50,6 +55,7 @@ export class AccountEffects {
 
     getMoviesFromWatchList$ = createEffect(() => this.actions$.pipe(
         ofType(AccountActions.getMoviesFromWatchlistRequest),
+        tap(() => this.store$.dispatch(setIsLoading({ isLoading: true }))),
         switchMap(() => this.watchlistService.getMoviesFromWatchlist()
             .pipe(
                 map(response => AccountActions.getMoviesFromWatchlistSuccess({ movies: response.results })),
@@ -60,6 +66,7 @@ export class AccountEffects {
 
     removeMovieFromWatchlist$ = createEffect(() => this.actions$.pipe(
         ofType(AccountActions.removeFromWatchlistRequest),
+        tap(() => this.store$.dispatch(setIsLoading({ isLoading: true }))),
         switchMap(({ movieId }) => this.watchlistService.addToWatchlist(movieId, false)
             .pipe(
                 map(response => AccountActions.removeMovieFromWatchlistSuccess()),
@@ -78,6 +85,7 @@ export class AccountEffects {
 
     getRatedMovies$ = createEffect(() => this.actions$.pipe(
         ofType(AccountActions.getRatedMoviesRequest),
+        tap(() => this.store$.dispatch(setIsLoading({ isLoading: true }))),
         switchMap(() => this.ratingsService.getRatedMovies()
             .pipe(
                 map(response => AccountActions.getRatedMoviesSuccess({ movies: response.results })),
@@ -88,6 +96,7 @@ export class AccountEffects {
 
     rateMovie$ = createEffect(() => this.actions$.pipe(
         ofType(AccountActions.rateMovieRequest),
+        tap(() => this.store$.dispatch(setIsLoading({ isLoading: true }))),
         switchMap(({ movieId, rating }) => this.ratingsService.addRatingForMovie(movieId, rating)
             .pipe(
                 map(() => AccountActions.rateMovieSuccess()),
@@ -102,5 +111,21 @@ export class AccountEffects {
             notificationType: NotificationType.Success,
             detail: "You've successfully rated a movie."
         }))
+    ));
+
+    completedAction$ = createEffect(() => this.actions$.pipe(
+        ofType(
+            AccountActions.addMovieToWatchlistSuccess,
+            AccountActions.addMovieToWatchlistFailure,
+            AccountActions.getMoviesFromWatchlistSuccess,
+            AccountActions.getMoviesFromWatchlistFailure,
+            AccountActions.getRatedMoviesSuccess,
+            AccountActions.getRatedMoviesFailure,
+            AccountActions.rateMovieSuccess,
+            AccountActions.rateMovieFailure,
+            AccountActions.removeMovieFromWatchlistSuccess,
+            AccountActions.removeMovieFromWatchlistFailure
+        ),
+        map(() => setIsLoading({ isLoading: false }))
     ));
 }
