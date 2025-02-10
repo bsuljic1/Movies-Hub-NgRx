@@ -1,14 +1,13 @@
 import { createReducer, Action, on } from '@ngrx/store';
 import { IMovieState, initialMovieState } from './movie.state';
-import { getImagesForMovie, getImagesForMovieFailure, getImagesForMovieSuccess, getMovieDetailsByIdFailure, getMovieDetailsByIdRequest, getMovieDetailsByIdSuccess, getReviewsForMovie, getReviewsForMovieFailure, getReviewsForMovieSuccess, getVideosForMovieFailure, getVideosForMovieRequest, getVideosForMovieSuccess, getWatchProviderForMovie, getWatchProviderForMovieFailure, getWatchProviderForMovieSuccess } from './movie.actions';
+import { getImagesForMovieSuccess, getMovieDetailsByIdSuccess, getReviewsForMovieSuccess, getVideosForMovieSuccess, getWatchProviderForMovieSuccess } from './movie.actions';
 
 const reducer = createReducer(
     initialMovieState,
     on(getMovieDetailsByIdSuccess,
         (state, { movie }) => ({
             ...state,
-            selectedMovie: movie,
-            isLoading: false
+            selectedMovie: movie
         })
     ),
     on(getWatchProviderForMovieSuccess,
@@ -26,8 +25,7 @@ const reducer = createReducer(
     on(getReviewsForMovieSuccess,
         (state, { reviews }) => ({
             ...state,
-            reviews,
-            isLoading: false
+            reviews
         })
     ),
     on(getVideosForMovieSuccess,
@@ -36,17 +34,7 @@ const reducer = createReducer(
             trailer,
             isLoading: false
         })
-    ),
-    on(getVideosForMovieRequest,
-        getReviewsForMovie,
-        getImagesForMovie,
-        getWatchProviderForMovie,
-        getMovieDetailsByIdRequest,
-        (state) => ({
-            ...state,
-            isLoading: true
-        })
-    ),
+    )
 );
 
 export function movieReducer(state: IMovieState, action: Action): IMovieState {
